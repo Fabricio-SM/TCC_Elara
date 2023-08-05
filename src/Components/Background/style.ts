@@ -8,10 +8,5 @@ export const style = StyleSheet.create({
         color: THEME.COLORS.TEXT,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    
-    image: {
-        width: 250,
-        height: 200,
     }
 })

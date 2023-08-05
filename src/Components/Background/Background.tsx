@@ -8,8 +8,8 @@ interface Props {
 
 export function Background({children}: Props) {
     return (
-        <SafeAreaView style={style.container}> 
+        <View style={style.container}> 
             {children} 
-        </SafeAreaView>
+        </View>
     );
 }

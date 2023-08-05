@@ -6,9 +6,11 @@ export const THEME = {
         BUTTON_COLOR_SUCCESS: '#007505',
         BUTTON_COLOR_ALERT: '#980000',
         MODAL_COLOR: '#141115',
-        INPUT_BACKGROUND: '#505050',
+        INPUT_BACKGROUND: '#5F5F5F',
+        PLACEHOLDER: '#9E9E9E',
 
-        TEXT: "#FFFFFF"
+        TEXT: "#FFFFFF",
+        TEXT_LINK: "#422680"
     },
 
     FONT_SIZE: {

@@ -1,6 +1,7 @@
 import React from "react";
 import { TextInput } from "react-native";
 import { style } from "./style";
+import { THEME } from "../../Themes";
 
 interface Props {
     isPass: boolean;
@@ -13,6 +14,7 @@ export function Input(props: Props) {
             style={style.input}
             secureTextEntry={props.isPass} 
             placeholder={props.placeholder}
+            placeholderTextColor={THEME.COLORS.PLACEHOLDER}
         />
     );
 }

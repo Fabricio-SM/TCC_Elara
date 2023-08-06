@@ -8,10 +8,16 @@ import { Home } from "../Screens/Home/Home";
 
 const Stack = createNativeStackNavigator()
 
+function firstScreen(): string {
+    const isLogged: boolean = true;
+
+    return isLogged ? 'home' : 'login';
+}
+
 export function AppRoutes() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* <Stack.Screen name="home" component={Home} /> */}
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={firstScreen()}>
+            <Stack.Screen name="home" component={Home} />
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="cadastro" component={Cadastro} />
         </Stack.Navigator>

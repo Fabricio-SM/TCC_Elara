@@ -10,6 +10,7 @@ const Stack = createNativeStackNavigator();
 
 export function AppRoutes() {
     const [defaultScreen, setDefaultScreen] = useState("login");
+    
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

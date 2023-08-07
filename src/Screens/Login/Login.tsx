@@ -17,8 +17,9 @@ interface UserData {
 
 export function Login() {
     const nav = useNavigation();
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
     const [errorMsg, setErrorMsg] = useState(false);
-    
 
     async function handlePostApi({ email, password }: UserData): Promise<boolean> {
         try {
@@ -43,8 +44,8 @@ export function Login() {
 
     async function redirectScreen() {
         const data: UserData = {
-            email: "gustavo@teste.com",
-            password: "senha"
+            email,
+            password: pass
         }
 
         const apiReturn = await handlePostApi(data);
@@ -73,13 +74,24 @@ export function Login() {
                         ) : null
                     }
 
-                    <Input isPass={false} placeholder={'Email'} />
+                    <Input 
+                        textContentType="emailAddress" 
+                        placeholder="Email" 
+                        onChangeText={newText => setEmail(newText)} 
+                        defaultValue={email}
+                    />
 
                     <Text style={style.labelSenha}>
                         Esqueci a senha
                     </Text>
 
-                    <Input isPass={true} placeholder={'Senha'} />
+                    <Input 
+                        placeholder="Senha"
+                        textContentType="password"
+                        onChangeText={newText => setPass(newText)}
+                        defaultValue={pass}
+                        secureTextEntry={true}
+                    />
 
                     <Pressable
                         style={style.button}

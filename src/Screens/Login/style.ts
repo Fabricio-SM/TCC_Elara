@@ -24,7 +24,7 @@ export const style = StyleSheet.create({
         color: THEME.COLORS.TEXT,
         fontSize: 30,
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 5,
     },
 
     text: {
@@ -53,5 +53,9 @@ export const style = StyleSheet.create({
         fontSize: 18,
     },
 
-
+    errorMessage: {
+        color: THEME.COLORS.ERROR_MESSAGE,
+        textAlign: 'center',
+        marginBottom: 5
+    }
 })

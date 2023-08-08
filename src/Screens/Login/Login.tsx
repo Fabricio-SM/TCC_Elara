@@ -23,11 +23,11 @@ export function Login() {
 
     async function handlePostApi({ email, password }: UserData): Promise<boolean> {
         try {
-            const { data, status } = await axios.post('http://192.168.0.213:3000/auth', {
+            const { data, status } = await axios.post(`http://192.168.0.213:3000/auth`, {
                 email,
                 "senha": password
             });
-            
+
             if (status == 200) {
                 await saveData('email', email);
                 await saveData('pass', password);
@@ -42,14 +42,14 @@ export function Login() {
         }
     }
 
-    async function redirectScreen() {
+    async function handleSubmit() {
         const data: UserData = {
             email,
             password: pass
         }
 
         const apiReturn = await handlePostApi(data);
-        
+
         if (apiReturn) {
             return nav.navigate("home");
         }
@@ -69,15 +69,16 @@ export function Login() {
                     {
                         errorMsg ? (
                             <Text style={style.errorMessage}>
-                                Usuário/senha podem estar incorretos
+                                Email/senha podem estar incorretos
                             </Text>
                         ) : null
                     }
 
-                    <Input 
-                        textContentType="emailAddress" 
-                        placeholder="Email" 
-                        onChangeText={newText => setEmail(newText)} 
+                    <Input
+                        textContentType="emailAddress"
+                        placeholder="Email"
+                        inputMode="email"
+                        onChangeText={newText => setEmail(newText)}
                         defaultValue={email}
                     />
 
@@ -85,7 +86,7 @@ export function Login() {
                         Esqueci a senha
                     </Text>
 
-                    <Input 
+                    <Input
                         placeholder="Senha"
                         textContentType="password"
                         onChangeText={newText => setPass(newText)}
@@ -93,9 +94,7 @@ export function Login() {
                         secureTextEntry={true}
                     />
 
-                    <Pressable
-                        style={style.button}
-                        onPress={() => redirectScreen()}>
+                    <Pressable style={style.button} onPress={() => handleSubmit()}>
                         <Text style={style.textButton}>Entrar</Text>
                     </Pressable>
                 </View>

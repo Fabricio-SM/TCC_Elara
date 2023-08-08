@@ -78,6 +78,7 @@ export function Login() {
                         textContentType="emailAddress"
                         placeholder="Email"
                         inputMode="email"
+                        keyboardType="email-address"
                         onChangeText={newText => setEmail(newText)}
                         defaultValue={email}
                     />

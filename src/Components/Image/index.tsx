@@ -9,7 +9,6 @@ export function PlanetImage() {
             source={planetImg}
             defaultSource={planetImg}
             style={styleImg.image}
-        >
-        </ImageBackground>
+        />
     );
 }

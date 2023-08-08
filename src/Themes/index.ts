@@ -10,6 +10,7 @@ export const THEME = {
         PLACEHOLDER: '#9E9E9E',
 
         TEXT: "#FFFFFF",
+        ERROR_MESSAGE: "#FF0000",
         TEXT_LINK: "#422680"
     },
 

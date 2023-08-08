@@ -95,9 +95,14 @@ export function Login() {
                         secureTextEntry={true}
                     />
 
+                    <Pressable style={style.button} onPress={() => nav.navigate("perfil")}>
+                        <Text style={style.textButton}>A</Text>
+                    </Pressable>
+
                     <Pressable style={style.button} onPress={() => handleSubmit()}>
                         <Text style={style.textButton}>Entrar</Text>
                     </Pressable>
+
                 </View>
 
                 <Text style={style.text}>Não tem uma conta?</Text>

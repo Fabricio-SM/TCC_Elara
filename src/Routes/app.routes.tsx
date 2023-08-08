@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Login } from "../Screens/Login/Login";
 import { Cadastro } from "../Screens/Cadastro/Cadastro";
+import { Perfil } from "../Screens/Perfil/Perfil"
 import { Home } from "../Screens/Home/Home";
 import { getData } from "../services/getData";
 
@@ -38,6 +39,7 @@ export function AppRoutes() {
             <Stack.Screen name="home" component={Home} />
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="cadastro" component={Cadastro} />
+            <Stack.Screen name="perfil" component={Perfil} />
         </Stack.Navigator>
     );
 }

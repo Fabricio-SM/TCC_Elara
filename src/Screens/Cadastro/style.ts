@@ -4,8 +4,8 @@ export const style = StyleSheet.create({
     label2: {
         color: '#ffffff',
         marginTop: 10,
-        textAlign: 'right',
-        fontSize: 12,
+        textAlign: 'left',
+        fontSize: 18,
     },
 
     label: {
@@ -18,4 +18,11 @@ export const style = StyleSheet.create({
     text: {
         color: '#ffffff',
     },
+
+    view: {
+        flex: 1,
+        marginTop: 80,
+        width: '70%',
+        
+    }
 });

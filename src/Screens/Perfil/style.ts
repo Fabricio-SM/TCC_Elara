@@ -17,18 +17,20 @@ export const style = StyleSheet.create({
     },
 
     text: {
+        marginTop: 25,
         color: '#ffffff',
+
     },
 
     view: {
         marginTop: 80,
-        width: '70%',
+        width: '90%',
         
     },
 
     rowView: {
         flexDirection:'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
     },
 
     button: {
@@ -45,7 +47,7 @@ export const style = StyleSheet.create({
         marginTop: 20,
         alignSelf: 'center',
         alignItems: 'center',
-        width: 100,
+        width: 80,
         height: 40,
         backgroundColor: THEME.COLORS.BUTTON_COLOR_ALERT,
         borderRadius: 7,

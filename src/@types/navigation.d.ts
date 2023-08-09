@@ -4,7 +4,8 @@ export declare global {
             home: undefined,
             login: undefined,
             cadastro: undefined,
-            perfil: undefined
+            perfil: undefined,
+            configs: undefined,
         }
     }
 }

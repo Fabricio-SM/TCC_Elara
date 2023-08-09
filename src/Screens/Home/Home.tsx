@@ -24,6 +24,10 @@ export function Home() {
                 <Pressable style={style.button} onPress={() => nav.navigate("perfil")}>
                     <Text style={style.textButton}>A</Text>
                 </Pressable>
+
+                <Pressable style={style.button} onPress={() => nav.navigate("configs")}>
+                    <Text style={style.textButton}>C</Text>
+                </Pressable>
             </View>
         </Background>
     );

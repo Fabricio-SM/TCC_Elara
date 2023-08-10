@@ -24,26 +24,13 @@ export const style = StyleSheet.create({
 
     view: {
         marginTop: 80,
-        width: '100%',       
-    },
-
-    view2: {
-        height: '50%',
-        width: '100%',   
-        backgroundColor: '#2c2c2c',  
+        width: '90%',       
     },
 
     rowView: {
         marginLeft: 20,
         flexDirection:'row',
         justifyContent: 'space-between',
-    },
-
-    rowView2: {
-        padding: 5,
-        flexDirection:'row',
-        justifyContent: 'space-between',
-        backgroundColor : '#464545',
     },
 
     hr:{
@@ -61,18 +48,9 @@ export const style = StyleSheet.create({
         borderColor: '#ffffff',
     },
 
-    button: {
-        marginTop: 20,
-        alignSelf: 'center',
-        alignItems: 'center',
-        width: 100,
-        height: 40,
-        backgroundColor: THEME.COLORS.BUTTON_COLOR_LINK,
-        borderRadius: 7,
-    },
-
-    hIcon: {
-        color: '#ffffff',
-        size: 18,
+    textButton: {
+        marginLeft: 8,
+        color: THEME.COLORS.TEXT,
+        fontSize: 18,
     },
 });

@@ -6,6 +6,8 @@ export declare global {
             cadastro: undefined,
             perfil: undefined,
             configs: undefined,
+            permissoes: undefined,
+            sobre: undefined,
         }
     }
 }

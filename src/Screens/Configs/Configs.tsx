@@ -33,13 +33,13 @@ export function Config() {
                         </Pressable>
                         <View style={style.hr}/>
 
-                        <Pressable style={style.pressable} onPress={() => {}}>
+                        <Pressable style={style.pressable} onPress={() => nav.navigate("permissoes")}>
                             <Icon color='#851397' name="lock-outline" type='material-community'/>
                             <Text style={style.textButton}>Permissões</Text>
                         </Pressable>
                         <View style={style.hr}/>
 
-                        <Pressable style={style.pressable} onPress={() => {}}>
+                        <Pressable style={style.pressable} onPress={() => nav.navigate("sobre")}>
                             <Icon color='#851397' name="help" type='material-community'/>
                             <Text style={style.textButton}>Sobre</Text>
                         </Pressable>

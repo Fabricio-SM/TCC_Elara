@@ -8,10 +8,12 @@ import { style } from "./style";
 import { Input } from "../../Components/Input/Input";
 import { Background } from "../../Components/Background/Background";
 import { PlanetImage } from "../../Components/Image";
-import { styleImg } from "../../Components/Image/style";
+import { Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 
 
 export function Perfil() {
+    const nav = useNavigation();
     const [date, setDate] = useState(new Date(1598051730000));
     const [show, setShow] = useState(false);
 
@@ -25,7 +27,13 @@ export function Perfil() {
         <Background>
             <SafeAreaView style={style.view}>
                 <View>
+                    <View style={style.rowView}>
+                    <Pressable>
+                            <Icon color='#ffffff' name="arrow-left-bold" type="material-community" onPress={() => nav.navigate("configs")}/>
+                        </Pressable>
                     <Text style={style.label}>Perfil</Text>
+                    <View></View>
+                </View>
 
                     <Text style={style.label2}>Nome</Text>
                     <Input textContentType="name"

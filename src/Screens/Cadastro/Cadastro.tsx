@@ -3,15 +3,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { View, Text, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm } from 'react-hook-form'
+import { useNavigation } from "@react-navigation/native";
 
 import { style } from "./style";
 import { Input } from "../../Components/Input/Input";
 import { Background } from "../../Components/Background/Background";
 import { PlanetImage } from "../../Components/Image";
-import { useNavigation } from "@react-navigation/native";
-import { convertTimestampToDate } from "../../utils/convertDate";
-import axios from "axios";
 
+import { convertDateToString } from "../../utils/convertDate";
+import axios from "axios";
 
 interface RequestBody {
     nome: string,
@@ -20,17 +20,18 @@ interface RequestBody {
     senha: string
 }
 
-
 export function Cadastro() {
     const nav = useNavigation();
     const [date, setDate] = useState(new Date());
-    const { register, setValue, handleSubmit } = useForm()
+    const { register, setValue, handleSubmit } = useForm();
     const [show, setShow] = useState(false);
 
     const onChange = (selectedDate: any) => {
-        const currentDate = selectedDate;
         setShow(false);
-        setDate(currentDate);
+
+        const timeStampConverted = new Date(selectedDate.nativeEvent.timestamp);
+
+        setDate(timeStampConverted);
     };
 
     useEffect(() => {
@@ -50,12 +51,17 @@ export function Cadastro() {
                 senha: formData.password
             }
 
-            const { status } = await axios.post('http://192.168.0.213:3000/user/add', body);
+            const { data, status } = await axios.post('http://192.168.0.213:3000/user/add', body)
 
-            if (status == 200) {
-                Alert.alert('Cadastro realizado com sucesso', 'Volte a tela de login para entrar');
+            if (status == 201) {
+                Alert.alert('Cadastro realizado com sucesso', 'Voltando a tela de login');
                 return nav.navigate('login');
             }
+
+            if (status == 400) {
+                return Alert.alert("Email registrado", "Hmm, parece que esse email já possui uma conta");
+            }
+
 
         } catch (error) {
             Alert.alert('Um erro ocorreu', 'Tente novamente mais tarde');
@@ -95,7 +101,7 @@ export function Cadastro() {
                     />
 
                     <Text style={style.label2}>Data de Nascimento</Text>
-                    <Input defaultValue={convertTimestampToDate(date)} onPressIn={() => setShow(true)} />
+                    <Input defaultValue={convertDateToString(date)} onPressIn={() => setShow(true)} />
                     {
                         show &&
                         <DateTimePicker

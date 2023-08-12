@@ -10,5 +10,12 @@ export const style = StyleSheet.create({
         color: THEME.COLORS.TEXT,
         borderRadius: 7,
         padding: 10,
+    },
+
+    label: {
+        color: '#ffffff',
+        marginTop: 10,
+        textAlign: 'left',
+        fontSize: 18,
     }
 });

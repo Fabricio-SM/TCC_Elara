@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import * as yup from "yup";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState } from "react";
 import { View, Text, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { useNavigation } from "@react-navigation/native";
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { style } from "./style";
 import { Input } from "../../Components/Input/Input";
@@ -11,19 +14,50 @@ import { Background } from "../../Components/Background/Background";
 import { PlanetImage } from "../../Components/Image";
 
 import { convertDateToString } from "../../utils/convertDate";
-import axios from "axios";
 
-interface RequestBody {
+
+type RequestBody = {
     nome: string,
     email: string,
     dataNascimento: Date,
     senha: string
 }
 
+type FormProps = {
+    name: string,
+    email: string,
+    emailConfirm: string,
+    password: string,
+    passConfirm: string
+}
+
+const schema = yup.object({
+    name: yup.string().required('Informe o nome'),
+    
+    email: yup.string()
+        .required('Informe o email')
+        .email('Informe um email válido'),
+
+    emailConfirm: yup.string()
+        .required('Informe o email')
+        .oneOf([yup.ref('email')], 'Email não é igual'),
+
+    password: yup.string()
+        .min(5, 'A senha deve ter no mínimo 5 caracteres')
+        .max(8, 'A senha deve ter no máximo 8 caracteres')
+        .required('Informe a senha'),
+
+    passConfirm: yup.string()
+        .required('Informe a confirmação da senha')
+        .oneOf([yup.ref('password')], 'A senha não é igual'),
+})
+
 export function Cadastro() {
     const nav = useNavigation();
     const [date, setDate] = useState(new Date());
-    const { register, setValue, handleSubmit } = useForm();
+    const { control, handleSubmit, formState: { errors } } = useForm<FormProps>({
+        resolver: yupResolver(schema)
+    });
     const [show, setShow] = useState(false);
 
     const onChange = (selectedDate: any) => {
@@ -34,21 +68,13 @@ export function Cadastro() {
         setDate(timeStampConverted);
     };
 
-    useEffect(() => {
-        register('name')
-        register('email')
-        register('emailConfirm')
-        register('password')
-        register('passConfirm')
-    }, [register])
-
-    async function onSubmit(formData: any) {
+    async function onSubmit({ name, email, password }: FormProps) {
         try {
             const body: RequestBody = {
-                nome: formData.name,
-                email: formData.email,
+                nome: name,
+                email: email,
                 dataNascimento: date,
-                senha: formData.password
+                senha: password
             }
 
             const { data, status } = await axios.post('http://192.168.0.213:3000/user/add', body)
@@ -76,32 +102,57 @@ export function Cadastro() {
                 <View>
                     <Text style={style.label}>Cadastrar</Text>
 
-                    <Text style={style.label2}>Nome</Text>
-                    <Input textContentType="name"
-                        placeholder="Nome"
-                        inputMode="text"
-                        onChangeText={newText => setValue('name', newText)}
+                    <Controller
+                        control={control}
+                        name="name"
+                        rules={{
+                            required: 'Informe o nome'
+                        }}
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                labelValue="Nome"
+                                textContentType="name"
+                                placeholder="Nome"
+                                inputMode="text"
+                                onChangeText={onChange}
+                                errorMessage={errors.name?.message}
+                            />
+                        )}
                     />
 
-                    <Text style={style.label2}>E-mail</Text>
-                    <Input
-                        textContentType="emailAddress"
-                        placeholder="Email"
-                        inputMode="email"
-                        keyboardType="email-address"
-                        onChangeText={newText => setValue('email', newText)}
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                labelValue="Email"
+                                textContentType="emailAddress"
+                                placeholder="Email"
+                                inputMode="email"
+                                keyboardType="email-address"
+                                onChangeText={onChange}
+                                errorMessage={errors.email?.message}
+                            />
+                        )}
                     />
 
-                    <Text style={style.label2}>Confirmar E-mail</Text>
-                    <Input textContentType="emailAddress"
-                        placeholder="Confirmar Email"
-                        inputMode="email"
-                        keyboardType="email-address"
-                        onChangeText={newText => setValue('emailConfirm', newText)}
+                    <Controller
+                        control={control}
+                        name="emailConfirm"
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                labelValue="Confirmar Email"
+                                textContentType="emailAddress"
+                                placeholder="Confirmar Email"
+                                inputMode="email"
+                                keyboardType="email-address"
+                                onChangeText={onChange}
+                                errorMessage={errors.emailConfirm?.message}
+                            />
+                        )}
                     />
 
-                    <Text style={style.label2}>Data de Nascimento</Text>
-                    <Input defaultValue={convertDateToString(date)} onPressIn={() => setShow(true)} />
+                    <Input labelValue="Data de nascimento" defaultValue={convertDateToString(date)} onPressIn={() => setShow(true)} />
                     {
                         show &&
                         <DateTimePicker
@@ -112,18 +163,35 @@ export function Cadastro() {
                         />
                     }
 
-                    <Text style={style.label2}>Senha</Text>
-                    <Input
-                        placeholder="Senha"
-                        textContentType="password"
-                        onChangeText={newText => setValue('password', newText)}
-                        secureTextEntry={true} />
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                labelValue="Senha"
+                                placeholder="Senha"
+                                textContentType="password"
+                                onChangeText={onChange}
+                                secureTextEntry
+                                errorMessage={errors.password?.message}
+                            />
+                        )}
+                    />
 
-                    <Text style={style.label2}>Confirmar Senha</Text>
-                    <Input placeholder="Confirmar Senha"
-                        textContentType="password"
-                        onChangeText={newText => setValue('passConfirm', newText)}
-                        secureTextEntry={true} />
+                    <Controller
+                        control={control}
+                        name="passConfirm"
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                labelValue="Confirmar senha"
+                                placeholder="Confirmar Senha"
+                                textContentType="password"
+                                onChangeText={onChange}
+                                secureTextEntry
+                                errorMessage={errors.passConfirm?.message}
+                            />
+                        )}
+                    />
 
                     <View style={style.rowView}>
                         <Pressable style={style.button} onPress={handleSubmit(onSubmit)}>

@@ -1,10 +1,25 @@
 import React from "react";
-import { TextInput, TextInputProps } from "react-native";
+import { Text, TextInput, TextInputProps, View } from "react-native";
 import { style } from "./style";
 import { THEME } from "../../Themes";
 
-export function Input({ ...rest }: TextInputProps) {
+type Props = TextInputProps & {
+    labelValue?: string
+    errorMessage?: string
+}
+
+export function Input({ labelValue, errorMessage, ...rest }: Props) {
     return (
-        <TextInput style={style.input} placeholderTextColor={THEME.COLORS.PLACEHOLDER} {...rest} />
+        <View>
+            {
+                labelValue && <Text style={style.label}>{labelValue}</Text>
+            }
+            <TextInput style={[style.input, errorMessage ? style.inputError : style.input]} placeholderTextColor={THEME.COLORS.PLACEHOLDER} {...rest} />
+            {
+                errorMessage && <Text style={style.textError}>
+                    {errorMessage}
+                </Text>
+            }
+        </View>
     );
 }

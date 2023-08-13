@@ -1,13 +1,16 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import axios from 'axios';
-import { Pressable, View, Text } from "react-native"
-import { useNavigation } from "@react-navigation/native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import * as yup from "yup";
+import { Pressable, View, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
 
-import { PlanetImage } from "../../Components/Image"
-import { Input } from "../../Components/Input/Input"
-import { style } from "./style"
-import { Background } from "../../Components/Background/Background"
+import { PlanetImage } from "../../Components/Image";
+import { Input } from "../../Components/Input/Input";
+import { style } from "./style";
+import { Background } from "../../Components/Background/Background";
 import { saveData } from "../../services/saveData";
 
 interface UserData {
@@ -15,10 +18,17 @@ interface UserData {
     password: string
 }
 
+const schema = yup.object({
+    email: yup.string().required('Informe o email').email('Email inválido'),
+    password: yup.string().required('Informe a senha')
+});
+
 export function Login() {
     const nav = useNavigation();
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
+    const { control, handleSubmit, formState: { errors } } = useForm<UserData>({
+        resolver: yupResolver(schema)
+    });
+
     const [errorMsg, setErrorMsg] = useState(false);
 
     async function handlePostApi({ email, password }: UserData): Promise<boolean> {
@@ -42,13 +52,13 @@ export function Login() {
         }
     }
 
-    async function handleSubmit() {
-        const data: UserData = {
+    async function onSubmit({ email, password }: UserData) {
+        const body: UserData = {
             email,
-            password: pass
+            password: password
         }
 
-        const apiReturn = await handlePostApi(data);
+        const apiReturn = await handlePostApi(body);
 
         if (apiReturn) {
             return nav.navigate("home");
@@ -74,29 +84,41 @@ export function Login() {
                         ) : null
                     }
 
-                    <Input
-                        textContentType="emailAddress"
-                        placeholder="Email"
-                        inputMode="email"
-                        keyboardType="email-address"
-                        onChangeText={newText => setEmail(newText)}
-                        defaultValue={email}
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                textContentType="emailAddress"
+                                placeholder="Email"
+                                inputMode="email"
+                                keyboardType="email-address"
+                                onChangeText={onChange}
+                                errorMessage={errors.email?.message}
+                            />
+                        )}
                     />
 
                     <Text style={style.labelSenha}>
                         Esqueci a senha
                     </Text>
 
-                    <Input
-                        placeholder="Senha"
-                        textContentType="password"
-                        onChangeText={newText => setPass(newText)}
-                        defaultValue={pass}
-                        secureTextEntry={true}
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                placeholder="Senha"
+                                textContentType="password"
+                                onChangeText={onChange}
+                                secureTextEntry
+                                errorMessage={errors.password?.message}
+                            />
+                        )}
                     />
 
-                    {/* <Pressable style={style.button} onPress={() => handleSubmit()}> */}
-                    <Pressable style={style.button} onPress={() => nav.navigate("home")}>
+                    <Pressable style={style.button} onPress={handleSubmit(onSubmit)}>
+                        {/* <Pressable style={style.button} onPress={() => nav.navigate("home")}> */}
                         <Text style={style.textButton}>Entrar</Text>
                     </Pressable>
 

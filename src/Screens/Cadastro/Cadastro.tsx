@@ -55,10 +55,11 @@ const schema = yup.object({
 export function Cadastro() {
     const nav = useNavigation();
     const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+    
     const { control, handleSubmit, formState: { errors } } = useForm<FormProps>({
         resolver: yupResolver(schema)
     });
-    const [show, setShow] = useState(false);
 
     const onChange = (selectedDate: any) => {
         setShow(false);
@@ -105,9 +106,6 @@ export function Cadastro() {
                     <Controller
                         control={control}
                         name="name"
-                        rules={{
-                            required: 'Informe o nome'
-                        }}
                         render={({ field: { onChange } }) => (
                             <Input
                                 labelValue="Nome"

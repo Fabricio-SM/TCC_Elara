@@ -10,5 +10,23 @@ export const style = StyleSheet.create({
         color: THEME.COLORS.TEXT,
         borderRadius: 7,
         padding: 10,
+    },
+
+    inputError: {
+        borderWidth: 2,
+        borderColor: THEME.COLORS.ERROR_MESSAGE,
+    },
+
+    label: {
+        color: '#ffffff',
+        marginTop: 10,
+        marginBottom: 5,
+        textAlign: 'left',
+        fontSize: 18,
+    },
+
+    textError: {
+        color: THEME.COLORS.ERROR_MESSAGE,
+        textAlign: 'left',  
     }
 });

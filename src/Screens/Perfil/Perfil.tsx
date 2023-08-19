@@ -18,6 +18,7 @@ import { PlanetImage } from "../../Components/Image";
 import { getData } from "../../services/getData";
 import { convertDateToString } from "../../utils/convertDate";
 import { saveData } from "../../services/saveData";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 type UserData = {
     nome: string;
@@ -37,7 +38,7 @@ const schema = yup.object({
 
 export function Perfil() {
     const nav = useNavigation();
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState<Date>(new Date());
     const [show, setShow] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
     const [data, setData] = useState<UserData>();
@@ -57,10 +58,12 @@ export function Perfil() {
                     Authorization: `Bearer ${token}`
                 }
             }).then(res => setData(res.data));
+
+            setDate(data?.dataNascimento || new Date());
         }
 
         getInfosUser();
-    }, [data]);
+    }, []);
 
     async function onSubmit({ nome, email }: FormProps) {
         try {
@@ -69,29 +72,29 @@ export function Perfil() {
                 email,
                 "dataNascimento": date
             }
-    
+
             const [savedEmail, token] = await Promise.all([
                 getData("email"),
                 getData("access_token")
             ]);
-    
+
             const { data, status } = await axios.put(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/${savedEmail}`, body, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-    
+
             if (status == 200) {
                 if (email !== savedEmail) {
                     await saveData("email", email);
                 }
-    
+
                 Alert.alert("Informações atualizadas", "Informações atualizadas com sucesso, voltando para tela inicial");
-    
+
                 return nav.navigate("home")
             }
         } catch (error) {
-            
+            return Alert.alert("Um erro aconteceu", "Houve um erro ao procesar sua solicitacão, por favor tente novamente mais tarde");
         }
 
     }
@@ -114,9 +117,11 @@ export function Perfil() {
     }
 
     const onChange = (selectedDate: any) => {
-        const currentDate = selectedDate;
         setShow(false);
-        setDate(currentDate);
+
+        const timeStampConverted = new Date(selectedDate.nativeEvent.timestamp);
+
+        setDate(timeStampConverted);
     };
 
     return (
@@ -173,7 +178,7 @@ export function Perfil() {
                     <Input
                         labelValue="Data de nascimento"
                         editable={canEdit}
-                        defaultValue={convertDateToString(data?.dataNascimento || new Date())}
+                        value={convertDateToString(date)}
                         onPressIn={() => setShow(true)}
                     />
                     {
@@ -196,9 +201,15 @@ export function Perfil() {
 
                     {
                         canEdit &&
-                        <Pressable style={style.button} onPress={handleSubmit(onSubmit)}>
-                            <Text style={style.textButton}>Salvar</Text>
-                        </Pressable>
+                        <View>
+                            <Pressable style={style.button} onPress={handleSubmit(onSubmit)}>
+                                <Text style={style.textButton}>Salvar</Text>
+                            </Pressable>
+
+                            <Pressable style={style.button2} onPress={() => setCanEdit(false)}>
+                                <Text style={style.textButton}>Cancelar</Text>
+                            </Pressable>
+                        </View>
                     }
 
                     <View style={{ opacity: 0.5 }}>

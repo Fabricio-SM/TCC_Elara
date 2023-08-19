@@ -18,7 +18,6 @@ import { PlanetImage } from "../../Components/Image";
 import { getData } from "../../services/getData";
 import { convertDateToString } from "../../utils/convertDate";
 import { saveData } from "../../services/saveData";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 type UserData = {
     nome: string;

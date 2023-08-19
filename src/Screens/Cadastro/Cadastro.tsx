@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useState } from "react";
 import { View, Text, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from "@react-navigation/native";
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -14,7 +14,6 @@ import { Background } from "../../Components/Background/Background";
 import { PlanetImage } from "../../Components/Image";
 
 import { convertDateToString } from "../../utils/convertDate";
-
 
 type RequestBody = {
     nome: string,
@@ -33,7 +32,7 @@ type FormProps = {
 
 const schema = yup.object({
     name: yup.string().required('Informe o nome'),
-    
+
     email: yup.string()
         .required('Informe o email')
         .email('Informe um email válido'),
@@ -55,10 +54,11 @@ const schema = yup.object({
 export function Cadastro() {
     const nav = useNavigation();
     const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+
     const { control, handleSubmit, formState: { errors } } = useForm<FormProps>({
         resolver: yupResolver(schema)
     });
-    const [show, setShow] = useState(false);
 
     const onChange = (selectedDate: any) => {
         setShow(false);
@@ -77,7 +77,7 @@ export function Cadastro() {
                 senha: password
             }
 
-            const { data, status } = await axios.post('http://192.168.0.213:3000/user/add', body)
+            const { data, status } = await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/add`, body)
 
             if (status == 201) {
                 Alert.alert('Cadastro realizado com sucesso', 'Voltando a tela de login');
@@ -93,7 +93,6 @@ export function Cadastro() {
             Alert.alert('Um erro ocorreu', 'Tente novamente mais tarde');
             return nav.navigate('login');
         }
-
     }
 
     return (
@@ -105,9 +104,6 @@ export function Cadastro() {
                     <Controller
                         control={control}
                         name="name"
-                        rules={{
-                            required: 'Informe o nome'
-                        }}
                         render={({ field: { onChange } }) => (
                             <Input
                                 labelValue="Nome"

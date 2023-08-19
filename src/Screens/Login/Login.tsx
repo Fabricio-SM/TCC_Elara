@@ -1,38 +1,50 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import axios from 'axios';
-import { Pressable, View, Text } from "react-native"
-import { useNavigation } from "@react-navigation/native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import * as yup from "yup";
+import { Pressable, View, Text, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
 
-import { PlanetImage } from "../../Components/Image"
-import { Input } from "../../Components/Input/Input"
-import { style } from "./style"
-import { Background } from "../../Components/Background/Background"
+import { PlanetImage } from "../../Components/Image";
+import { Input } from "../../Components/Input/Input";
+import { style } from "./style";
+import { Background } from "../../Components/Background/Background";
 import { saveData } from "../../services/saveData";
 
-interface UserData {
+type UserData = {
     email: string,
     password: string
 }
 
+const schema = yup.object({
+    email: yup.string().required('Informe o email').email('Email inválido'),
+    password: yup.string().required('Informe a senha')
+});
+
 export function Login() {
     const nav = useNavigation();
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
+    const { control, handleSubmit, formState: { errors }, reset } = useForm<UserData>({
+        resolver: yupResolver(schema)
+    });
+
     const [errorMsg, setErrorMsg] = useState(false);
 
     async function handlePostApi({ email, password }: UserData): Promise<boolean> {
         try {
-            const { data, status } = await axios.post(`http://192.168.0.213:3000/auth`, {
+            const { data, status } = await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/auth`, {
                 email,
                 "senha": password
             });
 
             if (status == 200) {
-                await saveData('email', email);
-                await saveData('pass', password);
-                await saveData('token', data.access_token);
-
+                await Promise.all([
+                    saveData('email', email),
+                    saveData('pass', password),
+                    saveData('access_token', data.access_token)
+                ]);
+                
                 return true;
             }
 
@@ -42,19 +54,25 @@ export function Login() {
         }
     }
 
-    async function handleSubmit() {
-        const data: UserData = {
-            email,
-            password: pass
+    async function onSubmit({ email, password }: UserData) {
+        try {
+            const body: UserData = {
+                email,
+                password: password
+            }
+    
+            const apiReturn = await handlePostApi(body);
+    
+            if (apiReturn) {
+                reset();
+                return nav.navigate("home");
+            }
+    
+            setErrorMsg(true);  
+        } catch (error) {
+            return Alert.alert("Um erro aconteceu", "Houve um erro ao procesar sua solicitacão, por favor tente novamente mais tarde");
         }
 
-        const apiReturn = await handlePostApi(data);
-
-        if (apiReturn) {
-            return nav.navigate("home");
-        }
-
-        setErrorMsg(true);
     }
 
     return (
@@ -74,29 +92,41 @@ export function Login() {
                         ) : null
                     }
 
-                    <Input
-                        textContentType="emailAddress"
-                        placeholder="Email"
-                        inputMode="email"
-                        keyboardType="email-address"
-                        onChangeText={newText => setEmail(newText)}
-                        defaultValue={email}
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                textContentType="emailAddress"
+                                placeholder="Email"
+                                inputMode="email"
+                                keyboardType="email-address"
+                                onChangeText={onChange}
+                                errorMessage={errors.email?.message}
+                            />
+                        )}
                     />
 
                     <Text style={style.labelSenha}>
                         Esqueci a senha
                     </Text>
 
-                    <Input
-                        placeholder="Senha"
-                        textContentType="password"
-                        onChangeText={newText => setPass(newText)}
-                        defaultValue={pass}
-                        secureTextEntry={true}
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field: { onChange } }) => (
+                            <Input
+                                placeholder="Senha"
+                                textContentType="password"
+                                onChangeText={onChange}
+                                secureTextEntry
+                                errorMessage={errors.password?.message}
+                            />
+                        )}
                     />
 
-                    {/* <Pressable style={style.button} onPress={() => handleSubmit()}> */}
-                    <Pressable style={style.button} onPress={() => nav.navigate("home")}>
+                    <Pressable style={style.button} onPress={handleSubmit(onSubmit)}>
+                        {/* <Pressable style={style.button} onPress={() => nav.navigate("home")}> */}
                         <Text style={style.textButton}>Entrar</Text>
                     </Pressable>
 

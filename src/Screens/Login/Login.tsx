@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import * as yup from "yup";
-import { Pressable, View, Text } from "react-native";
+import { Pressable, View, Text, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,7 +13,7 @@ import { style } from "./style";
 import { Background } from "../../Components/Background/Background";
 import { saveData } from "../../services/saveData";
 
-interface UserData {
+type UserData = {
     email: string,
     password: string
 }
@@ -25,7 +25,7 @@ const schema = yup.object({
 
 export function Login() {
     const nav = useNavigation();
-    const { control, handleSubmit, formState: { errors } } = useForm<UserData>({
+    const { control, handleSubmit, formState: { errors }, reset } = useForm<UserData>({
         resolver: yupResolver(schema)
     });
 
@@ -33,16 +33,18 @@ export function Login() {
 
     async function handlePostApi({ email, password }: UserData): Promise<boolean> {
         try {
-            const { data, status } = await axios.post(`http://192.168.0.213:3000/auth`, {
+            const { data, status } = await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/auth`, {
                 email,
                 "senha": password
             });
 
             if (status == 200) {
-                await saveData('email', email);
-                await saveData('pass', password);
-                await saveData('token', data.access_token);
-
+                await Promise.all([
+                    saveData('email', email),
+                    saveData('pass', password),
+                    saveData('access_token', data.access_token)
+                ]);
+                
                 return true;
             }
 
@@ -53,18 +55,24 @@ export function Login() {
     }
 
     async function onSubmit({ email, password }: UserData) {
-        const body: UserData = {
-            email,
-            password: password
+        try {
+            const body: UserData = {
+                email,
+                password: password
+            }
+    
+            const apiReturn = await handlePostApi(body);
+    
+            if (apiReturn) {
+                reset();
+                return nav.navigate("home");
+            }
+    
+            setErrorMsg(true);  
+        } catch (error) {
+            return Alert.alert("Um erro aconteceu", "Houve um erro ao procesar sua solicitacão, por favor tente novamente mais tarde");
         }
 
-        const apiReturn = await handlePostApi(body);
-
-        if (apiReturn) {
-            return nav.navigate("home");
-        }
-
-        setErrorMsg(true);
     }
 
     return (

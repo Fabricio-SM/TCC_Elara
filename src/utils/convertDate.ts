@@ -1,5 +1,11 @@
-export function convertTimestampToDate(timestamp: any): Date {    
-    return new Date(timestamp.nativeEvent.timestamp);
+export function convertTimestampToDate(timestamp: any): Date { 
+    const newDate = new Date(timestamp);
+
+    const day = newDate.getUTCDate();
+    const month = newDate.getUTCMonth();
+    const year = newDate.getUTCFullYear();
+
+    return new Date(year, month, day);
 }
 
 export function convertDateToString(inputDate: Date){

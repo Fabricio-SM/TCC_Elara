@@ -16,7 +16,7 @@ import { Background } from "../../Components/Background/Background";
 import { PlanetImage } from "../../Components/Image";
 
 import { getData } from "../../services/getData";
-import { convertDateToString } from "../../utils/convertDate";
+import { convertDateToString, convertTimestampToDate } from "../../utils/convertDate";
 import { saveData } from "../../services/saveData";
 
 type UserData = {
@@ -42,7 +42,7 @@ export function Perfil() {
     const [canEdit, setCanEdit] = useState(false);
     const [data, setData] = useState<UserData>();
     const { control, handleSubmit, formState: { errors } } = useForm<FormProps>({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schema),
     });
 
     useEffect(() => {
@@ -52,13 +52,14 @@ export function Perfil() {
                 getData('token')
             ]);
 
-            await axios.get(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/${email}`, {
+            const { data } = await axios.get(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/${email}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            }).then(res => setData(res.data));
+            });
 
-            setDate(data?.dataNascimento || new Date());
+            setDate(new Date(data.dataNascimento))
+            setData(data);
         }
 
         getInfosUser();
@@ -118,10 +119,20 @@ export function Perfil() {
     const onChange = (selectedDate: any) => {
         setShow(false);
 
-        const timeStampConverted = new Date(selectedDate.nativeEvent.timestamp);
+        const timestamp = selectedDate.nativeEvent.timestamp;
+        const timeStampConverted = convertTimestampToDate(timestamp);
 
         setDate(timeStampConverted);
     };
+
+    /**
+     * Reset all useState onPress the button cancel
+     */
+    const onCancel = () => {
+        setCanEdit(false);
+        setDate(new Date(data?.dataNascimento || new Date()));
+        setData(data);
+    }
 
     return (
         <Background>
@@ -205,7 +216,7 @@ export function Perfil() {
                                 <Text style={style.textButton}>Salvar</Text>
                             </Pressable>
 
-                            <Pressable style={style.button2} onPress={() => setCanEdit(false)}>
+                            <Pressable style={style.button2} onPress={() => onCancel()}>
                                 <Text style={style.textButton}>Cancelar</Text>
                             </Pressable>
                         </View>

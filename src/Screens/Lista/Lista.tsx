@@ -25,6 +25,8 @@ export function Lista() {
                         
                     </View>
                     <View style={style.hr}/>
+                    <View style={style.rowView}></View>
+                    <View style={style.rowView}></View>
 
 
 

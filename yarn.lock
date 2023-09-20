@@ -4125,6 +4125,7 @@ __metadata:
     "@types/react": ~18.2.14
     axios: ^1.4.0
     expo: ^49.0.5
+    expo-checkbox: ~2.4.0
     expo-secure-store: ~12.3.1
     expo-status-bar: ~1.6.0
     react: 18.2.0
@@ -4378,6 +4379,13 @@ __metadata:
     path-browserify: ^1.0.0
     url-parse: ^1.5.9
   checksum: 02607b67b8b53e47825ded6ca52eee47ae957cdc4b1501cdc0373bbd50ccfef605ba8a05a07ee88225622c7dc6054dfe1b64f03b21f09aaea7e1b4bf132d3ad7
+  languageName: node
+  linkType: hard
+
+"expo-checkbox@npm:~2.4.0":
+  version: 2.4.0
+  resolution: "expo-checkbox@npm:2.4.0"
+  checksum: d468a6d8d23ea4f34651f1817b9ee46fce714cfb32d6461d12ec8514e65fc441748ba4752b688c2aa83f0c728b111fa81560bb6064dac24917d600ec69b2916e
   languageName: node
   linkType: hard
 

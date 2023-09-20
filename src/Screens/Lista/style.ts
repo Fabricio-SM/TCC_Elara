@@ -33,6 +33,11 @@ export const style = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
+    colView: {
+        flexDirection:'column',
+        justifyContent: 'space-between',
+    },
+
     hr:{
         borderBottomColor: 'white',
         borderBottomWidth: StyleSheet.hairlineWidth,

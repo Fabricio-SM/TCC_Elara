@@ -56,8 +56,6 @@ export const style = StyleSheet.create({
     },
 
     pressable: {
-        padding: 8,
-        flexDirection:'row',
         borderColor: '#ffffff',
     },
 

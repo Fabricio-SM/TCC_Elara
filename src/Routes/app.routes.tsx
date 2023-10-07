@@ -8,7 +8,7 @@ import { Config } from "../Screens/Configs/Configs";
 import { Permissoes } from "../Screens/Permissoes/Permissoes";
 import { Sobre } from "../Screens/Sobre/Sobre";
 import { Home } from "../Screens/Home/Home";
-import { getData } from "../services/getData";
+import { getData } from "../services/Storage/getData";
 
 const Stack = createNativeStackNavigator();
 

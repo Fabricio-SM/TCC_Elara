@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import React, { useEffect, useState } from "react";
-import { Text, View, Pressable, Alert, ActivityIndicator } from "react-native";
+import { Text, View, Pressable, Alert, ActivityIndicator, Linking } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Icon } from 'react-native-elements'
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
@@ -11,6 +11,7 @@ import { PlanetImage } from "../../Components/Image";
 
 import { inputTypeAnalysis } from "../../utils/inputAnalysis";
 import { weatherRequest } from '../../services/Requests/weatherRequest';
+import { videoRequest, webRequest } from '../../services/Requests/searchRequest';
 
 export function Home() {
     const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -68,22 +69,38 @@ export function Home() {
 
                 switch (intention) {
                     case 'toDo':
-
+                        
                         break;
                     case 'search':
+                    case 'searchVideo':
+                        if (intention == 'search') {
+                            const message: string = await webRequest(audioTranscribed);
+                            console.log('Message - ', message);
+                        } else {
+                            const { message, video } = await videoRequest(audioTranscribed);
+
+                            if (video == null) {
+                                console.log('Message - ', message);
+
+                            } else {
+                                console.log('Message - ', message);
+                                Linking.openURL(video);
+                            }
+                        }
+
                         break;
 
                     case 'open':
                         break;
 
-                    case 'weather':                        
-                        const message = await weatherRequest(audioTranscribed.replace("\"", ""));
+                    case 'weather':
+                        const message: string = await weatherRequest(audioTranscribed.replace("\"", ""));
                         console.log('Message-', message);
 
                         break;
                     default:
                         console.log('Não entendi a sua solicatação');
-                        
+
                         break;
                 }
 

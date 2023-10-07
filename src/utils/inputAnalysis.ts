@@ -2,9 +2,10 @@ export function inputTypeAnalysis(phrase: string) {
     const cleanedInput: string = phrase.normalize("NFD").replace(/[^\w\s]/gi, '').toLowerCase();
     const optionsRegex: any = {
         "pesquisar|procurar": "search",
+        "video|pesquisar.+(video)": "searchVideo",
         "clima|previs[ãa]o.+tempo": "weather",
         "abrir|inici.+[ar|lizar]": "open",
-        "nova.+(lista|tarefa)": "toDo"
+        "(criar|colocar|nova|inserir).+(lista|tarefa)": "toDo"
     };
 
     let data = null;

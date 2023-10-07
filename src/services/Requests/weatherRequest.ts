@@ -6,7 +6,7 @@ export async function weatherRequest(phrase: string) {
     try {
         const token = await getData('token');
 
-        const phraseCleaned = removeWords(phrase.toLowerCase());
+        const phraseCleaned = removeWords(phrase);
 
         const body = {
             cityName: phraseCleaned,
@@ -20,7 +20,7 @@ export async function weatherRequest(phrase: string) {
         });
 
         if (status != 200) {
-            return "Não foi possivel realizar a solicitação2";
+            return "Não foi possivel realizar a solicitação";
         }
 
         return data.response.completeMessage;

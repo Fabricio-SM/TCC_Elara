@@ -20,9 +20,42 @@ export function convertDateToString(inputDate: Date) {
 }
 
 export function convertStringToDate(dateString: string) {
-    const day = parseInt(dateString.substring(0, 2), 10);
-    const month = parseInt(dateString.substring(2, 4), 10) - 1;
-    const year = parseInt(dateString.substring(4, 8), 10);
+    const regex = /(\d{2})(\d{2})(\d{4})|(\d{1,2}) de (\w+) de (\d{4})|(\d{1,2})(\d{1,2})(\d{4})/;
+    const match = dateString.match(regex);
 
-    return new Date(year, month, day);
+    if (match) {
+        if (match[1]) {
+            // Formato "ddmmyyyy"
+            const day = parseInt(match[1], 10);
+            const month = parseInt(match[2], 10) - 1; // Mês baseado em zero
+            const year = parseInt(match[3], 10);
+
+            return new Date(year, month, day);
+        } else if (match[4]) {
+            // Formato "dd de mês de yyyy"
+            const day = parseInt(match[4], 10);
+            const month = getNUmberOfMonth(match[5]);
+            const year = parseInt(match[6], 10);
+
+            return new Date(year, month, day);
+        } else if (match[7]) {
+            // Formato "ddmmyyyy"
+            const day = parseInt(match[7], 10);
+            const month = parseInt(match[8], 10) - 1; // Mês baseado em zero
+            const year = parseInt(match[9], 10);
+
+            return new Date(year, month, day);
+        }
+    }
+
+    return undefined;
 }
+
+function getNUmberOfMonth(nameMonth: string) {
+    const months = [
+      "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+      "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ];
+    const monthIndex = months.findIndex(month => month.toLowerCase() === nameMonth.toLowerCase());
+    return monthIndex !== -1 ? monthIndex : 0;
+  }

@@ -105,7 +105,6 @@ export function Home() {
                         break;
                     default:
                         message = 'Não entendi a sua solicitação';
-                        console.log('Não entendi a sua solicatação');
                         break;
 
                 }

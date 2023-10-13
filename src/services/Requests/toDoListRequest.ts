@@ -1,51 +1,58 @@
+import axios from "axios";
 import { convertStringToDate } from "../../utils/convertDate";
 import { removeWords } from "../../utils/removeWords";
+import { initAudioRecordToDo } from "../Record/AudioRecord";
 import { getData } from "../Storage/getData";
+import { SpeakModule } from "../Voice/SpeakModule";
 
-type TaskBody = {
-    nomeTarefa: string;
-    nomeLista: string;
-    dataEntrega?: Date;
-}
-
-type ListBody = {
-    emailUsuario: string;
-    nomeLista: string;
-    dataEntrega?: Date;
-}
-
-type InfosBody = {
-    nomeLista?: string;
-    nomeTarefa?: string;
-    data?: Date;
+function sleep(ms: number) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
 }
 
 export async function chooseRequestEndpoint(phrase: string) {
     const phraseCleaned = removeWords(phrase);
     const splitedPhrase = phraseCleaned.split(" ");
-    const infoBody = getInfosForMountBodyRequest(splitedPhrase);
 
     console.log(splitedPhrase);
 
     const hasListOrTaskInArray = splitedPhrase.find(el => el == 'tarefa' || el == 'lista');
-
-    let body: TaskBody | ListBody;
 
     if (hasListOrTaskInArray == undefined) {
         return 'Não entendi a sua solicitação';
     }
 
     if (hasListOrTaskInArray == 'tarefa') {
-        const { nomeTarefa, nomeLista, data } = infoBody;
+        SpeakModule("Qual vai ser o nome da tarefa?");
 
-        body = {
-            nomeTarefa: nomeTarefa || '',
-            nomeLista: nomeLista || '',
-            dataEntrega: data
-        };
+        await sleep(3000);
+        console.log('Dps do sleep');
 
-        const response = await newRequest(body, 'task');
-        return response;
+        const taskName = await initAudioRecordToDo();
+
+        SpeakModule('Qual o nome da lista onde a tarefa vai ficar?');
+        await sleep(3000);
+        console.log('Dps do sleep');
+        const listName = await initAudioRecordToDo();
+
+        SpeakModule('Qual é a data de entrega para essa tarefa?');
+        await sleep(3000);
+        console.log('Dps do sleep');
+        const deliveryDate = await initAudioRecordToDo();
+
+        console.log(deliveryDate);
+
+        if (deliveryDate != undefined) {
+            const body = {
+                nomeTarefa: taskName,
+                dataEntrega: convertStringToDate(deliveryDate),
+                nomeLista: listName,
+            }
+
+            const response = await newRequest(body, 'task');
+            return response;
+        }
 
     } else {
         const email = await getData('email');
@@ -54,51 +61,28 @@ export async function chooseRequestEndpoint(phrase: string) {
             return 'Erro'
         }
 
-        body = {
-            emailUsuario: email,
-            nomeLista: infoBody.nomeLista || '',
-            dataEntrega: infoBody.data
-        };
-
-        const response = await newRequest(body, 'list');
+        const response = await newRequest({}, 'list');
         return response;
     }
 }
 
-async function newRequest(body: TaskBody | ListBody, endpoint: string) {
-    return body;
-}
+async function newRequest(body: Object, endpoint: string) {
+    try {
+        const token = await getData('token');
 
-
-function getInfosForMountBodyRequest(phraseSplited: Array<string>): InfosBody {
-    const generalRegex = 'nome|data|de|entrega|para|lista|tarefa|dia';
-    const numbersRegex = '^(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[0-2])(\\d{4})$'
-    const onlyInformations: InfosBody = {
-        nomeLista: "",
-        nomeTarefa: "",
-        data: new Date()
-    }
-
-    phraseSplited.forEach(word => {
-        const generalMatch = new RegExp(generalRegex, 'i');
-        const numbersMatch = new RegExp(numbersRegex, 'i');
-
-        if (!generalMatch.test(word)) {
-            if (numbersMatch.test(word)) {
-                onlyInformations.data = convertStringToDate(word);
+        const { data, status } = await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/${endpoint}/add`, body, {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
-            else {
-                if (word == 'lista') {
-                    console.log(word);
-                    onlyInformations.nomeLista = word;
-                } else {
-                    onlyInformations.nomeTarefa = word;
-                }
-            }
+        });
+
+        if (status == 200) {
+            const listOrTask: string = endpoint == 'task' ? 'Tarefa' : 'Lista';
+            return `${listOrTask} criado com sucesso`;
         }
-    });
 
-    console.log("infos - ", onlyInformations);
-
-    return onlyInformations;
+    } catch (error) {
+        console.error(error);
+        return "Houve um erro para ao criar o que foi solicitado, tente novamente depois";
+    }
 }

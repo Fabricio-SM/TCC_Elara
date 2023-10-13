@@ -42,13 +42,13 @@ export async function videoRequest(phrase: string): Promise<any> {
 
         if (status != 200) {
             return {
-                message: `Não foi possível processar sua solicitação`,
+                apiMessage: `Não foi possível processar sua solicitação`,
                 video: null
             }
         }
 
         return {
-            message: `Isso foi o que encontrei sobre ${data.request} no canal ${data.response.channel}`,
+            apiMessage: `Isso foi o que encontrei sobre ${data.request} no canal ${data.response.channel}`,
             video: data.response.videoUrl
         };
     } catch (error) {

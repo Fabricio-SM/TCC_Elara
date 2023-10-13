@@ -13,6 +13,7 @@ import { inputTypeAnalysis } from "../../utils/inputAnalysis";
 import { weatherRequest } from '../../services/Requests/weatherRequest';
 import { videoRequest, webRequest } from '../../services/Requests/searchRequest';
 import { chooseRequestEndpoint } from '../../services/Requests/toDoListRequest';
+import { SpeakModule } from '../../services/Voice/SpeakModule';
 
 export function Home() {
     const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -67,7 +68,7 @@ export function Home() {
         async function requests() {
             if (activateService && audioTranscribed) {
                 const intention = inputTypeAnalysis(audioTranscribed);
-                let message;
+                let message = undefined;
 
                 switch (intention) {
                     case 'toDo':
@@ -75,22 +76,19 @@ export function Home() {
 
                         console.log('Message - ', message);
 
-                        message = "";
-                        
                         break;
                     case 'search':
                     case 'searchVideo':
                         if (intention == 'search') {
-                            const message: string = await webRequest(audioTranscribed);
+                            message = await webRequest(audioTranscribed);
                             console.log('Message - ', message);
                         } else {
-                            const { message, video } = await videoRequest(audioTranscribed);
+                            const { apiMessage, video } = await videoRequest(audioTranscribed);
 
-                            if (video == null) {
-                                console.log('Message - ', message);
+                            message = apiMessage;
 
-                            } else {
-                                console.log('Message - ', message);
+                            if (video != null) {
+                                console.log('Message - ', apiMessage);
                                 Linking.openURL(video);
                             }
                         }
@@ -106,9 +104,13 @@ export function Home() {
 
                         break;
                     default:
+                        message = 'Não entendi a sua solicitação';
                         console.log('Não entendi a sua solicatação');
                         break;
+
                 }
+
+                SpeakModule(message);
 
                 setActivateService(false);
                 setAudioTranscribed(null);

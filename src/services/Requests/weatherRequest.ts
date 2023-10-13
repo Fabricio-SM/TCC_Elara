@@ -26,6 +26,7 @@ export async function weatherRequest(phrase: string) {
         return data.response.completeMessage;
 
     } catch (error) {
-        return error;
+        console.log(error);
+        return 'Infelizmente houve um erro ao obter a informação';
     }
 }

@@ -4,7 +4,8 @@ export function removeWords(phrase: string) {
     const wordsToRemove: Array<string> = [
         'pesquisar', 'sobre', 'clima', 'tempo',
         'previsao', 'do', 'em', 'para', 'video',
-        'procurar',
+        'procurar', 'adicionar', 'uma', 'nova',
+        'chamada', 'com', 'o', 'criar', 'no',
     ];
 
     const phraseSplited = cleanedInput.split(' ');

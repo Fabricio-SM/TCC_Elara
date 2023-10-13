@@ -12,11 +12,12 @@ import { PlanetImage } from "../../Components/Image";
 import { inputTypeAnalysis } from "../../utils/inputAnalysis";
 import { weatherRequest } from '../../services/Requests/weatherRequest';
 import { videoRequest, webRequest } from '../../services/Requests/searchRequest';
+import { chooseRequestEndpoint } from '../../services/Requests/toDoListRequest';
 
 export function Home() {
     const [recording, setRecording] = useState<Audio.Recording | null>(null);
     const [activateService, setActivateService] = useState<boolean>(false);
-    const [audioTranscribed, setAudioTranscribed] = useState<string | null>(null)
+    const [audioTranscribed, setAudioTranscribed] = useState<string | null>(null);
     const nav = useNavigation();
 
     useEffect(() => {
@@ -66,9 +67,15 @@ export function Home() {
         async function requests() {
             if (activateService && audioTranscribed) {
                 const intention = inputTypeAnalysis(audioTranscribed);
+                let message;
 
                 switch (intention) {
                     case 'toDo':
+                        message = await chooseRequestEndpoint(audioTranscribed);
+
+                        console.log('Message - ', message);
+
+                        message = "";
                         
                         break;
                     case 'search':
@@ -94,13 +101,12 @@ export function Home() {
                         break;
 
                     case 'weather':
-                        const message: string = await weatherRequest(audioTranscribed.replace("\"", ""));
-                        console.log('Message-', message);
+                        message = await weatherRequest(audioTranscribed.replace("\"", ""));
+                        console.log('Message -', message);
 
                         break;
                     default:
                         console.log('Não entendi a sua solicatação');
-
                         break;
                 }
 

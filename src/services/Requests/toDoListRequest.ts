@@ -14,9 +14,6 @@ function sleep(ms: number) {
 export async function chooseRequestEndpoint(phrase: string) {
     const phraseCleaned = removeWords(phrase);
     const splitedPhrase = phraseCleaned.split(" ");
-
-    console.log(splitedPhrase);
-
     const hasListOrTaskInArray = splitedPhrase.find(el => el == 'tarefa' || el == 'lista');
 
     if (hasListOrTaskInArray == undefined) {
@@ -24,30 +21,23 @@ export async function chooseRequestEndpoint(phrase: string) {
     }
 
     if (hasListOrTaskInArray == 'tarefa') {
-        SpeakModule("Qual vai ser o nome da tarefa?");
-
+        SpeakModule("Qual o nome da tarefa?");
         await sleep(3000);
-        console.log('Dps do sleep');
-
         const taskName = await initAudioRecordToDo();
 
-        SpeakModule('Qual o nome da lista onde a tarefa vai ficar?');
+        SpeakModule('Em qual lista a tarefa será inserida?');
         await sleep(3000);
-        console.log('Dps do sleep');
         const listName = await initAudioRecordToDo();
 
-        SpeakModule('Qual é a data de entrega para essa tarefa?');
+        SpeakModule('Qual a data de entrega desta tarefa?');
         await sleep(3000);
-        console.log('Dps do sleep');
         const deliveryDate = await initAudioRecordToDo();
-
-        console.log(deliveryDate);
 
         if (deliveryDate != undefined) {
             const body = {
-                nomeTarefa: taskName,
+                nomeTarefa: taskName?.replace(/[^\w\s]/gi, "").toLowerCase(),
                 dataEntrega: convertStringToDate(deliveryDate),
-                nomeLista: listName,
+                nomeLista: listName?.replace(/[^\w\s]/gi, '').toLowerCase(),
             }
 
             const response = await newRequest(body, 'task');
@@ -61,8 +51,26 @@ export async function chooseRequestEndpoint(phrase: string) {
             return 'Erro'
         }
 
-        const response = await newRequest({}, 'list');
-        return response;
+        SpeakModule("Qual o nome da lista?");
+        await sleep(3000);
+        const listName = await initAudioRecordToDo();
+
+
+        SpeakModule('Qual a data de entrega desta lista?');
+        await sleep(3000);
+        const deliveryDate = await initAudioRecordToDo();
+
+        if (deliveryDate != undefined) {
+            const body = {
+                nomeLista: listName?.replace(/[^\w\s]/gi, "").toLowerCase(),
+                dataEntrega: convertStringToDate(deliveryDate),
+                emailUsuario: email
+            }
+            
+            const response = await newRequest(body, 'list');
+            return response;
+        }
+
     }
 }
 
@@ -70,16 +78,26 @@ async function newRequest(body: Object, endpoint: string) {
     try {
         const token = await getData('token');
 
-        const { data, status } = await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/${endpoint}/add`, body, {
+        console.log(body);
+
+
+        const resp = await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/${endpoint}/add`, body, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
 
-        if (status == 200) {
-            const listOrTask: string = endpoint == 'task' ? 'Tarefa' : 'Lista';
-            return `${listOrTask} criado com sucesso`;
+        if (resp.status == 400) {
+            if (resp.data.code == 'listNotFound') {
+                return `${resp.data.message}, crie uma lista para associar a tarefa.`
+            }
+
+            return resp.data;
         }
+
+        const listOrTask: string = endpoint == 'task' ? 'Tarefa' : 'Lista';
+        return `${listOrTask} criada com sucesso`;
+
 
     } catch (error) {
         console.error(error);

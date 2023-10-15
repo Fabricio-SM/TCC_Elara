@@ -27,6 +27,7 @@ interface Card {
 }
 
 export function Home() {
+    const [cardList, setCardList] = useState<Card[] | undefined>(undefined);
     const [card, setCard] = useState<Card[] | undefined>(undefined);
 
     const [componentCard, setComponentCard] = useState<string>("historic");
@@ -143,6 +144,40 @@ export function Home() {
         requests();
     });
 
+    async function handleApi() {
+        setComponentCard('list');
+
+        const [email, token] = await Promise.all([
+            getData("email"),
+            getData("access_token"),
+        ]);
+
+        console.log(email, token);
+        console.log(componentCard);
+
+        const { data, status } = await axios.get(
+            `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/${email}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        if (status == 200) {
+            const cards = data.listas.map((el: any) => {
+                return {
+                    title: el.nomeLista,
+                    subtitle: `Data de entrega: ${convertDateToString(
+                        el.dataEntrega
+                    )}`,
+                };
+            });
+
+            setCardList(cards);
+        }
+    }
+
     async function handleRecordStart() {
         const { granted } = await Audio.getPermissionsAsync();
 
@@ -189,39 +224,6 @@ export function Home() {
         }
     }
 
-    useEffect(() => {
-        async function handleApi() {
-            const [email, token] = await Promise.all([
-                getData("email"),
-                getData("access_token"),
-            ]);
-
-            if (componentCard == "list") {
-                const { data, status } = await axios.get(
-                    `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/${email}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-
-                if (status == 200) {
-                    const cards = data.listas.map((el: any) => {
-                        return {
-                            title: el.nomeLista,
-                            subtitle: `Data de entrega: ${convertDateToString(
-                                el.dataEntrega
-                            )}`,
-                        };
-                    });
-
-                    setCard(cards);
-                }
-            }
-        }
-        handleApi();
-    }, []);
 
     return (
         <Background>
@@ -268,7 +270,7 @@ export function Home() {
                         color={componentCard == "list" ? "#851397" : "#ffffff"}
                         size={40}
                         name="list"
-                        onPress={() => setComponentCard("list")}
+                        onPress={handleApi}
                     />
                     <Pressable>
                         <Icon
@@ -282,23 +284,24 @@ export function Home() {
                 </View>
 
                 <View style={style.view2}>
-                    {componentCard == "list" ? (
-                        <FlatList
-                            data={card}
-                            renderItem={({ item }) => (
-                                <CardsList title={item.title} subTitle={item.subtitle} />
-                            )}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                    ) : (
-                        <FlatList
-                            data={card}
-                            renderItem={({ item }) => (
-                                <Cards title={item.title} subTitle={item.subtitle} />
-                            )}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                    )}
+                    {
+                        componentCard == "list" ?
+                            <FlatList
+                                data={cardList}
+                                renderItem={({ item }) => (
+                                    <CardsList title={item.title} subTitle={item.subtitle} />
+                                )}
+                                keyExtractor={(item, index) => index.toString()}
+                            />
+                            :
+                            <FlatList
+                                data={card}
+                                renderItem={({ item }) => (
+                                    <Cards title={item.title} subTitle={item.subtitle} />
+                                )}
+                                keyExtractor={(item, index) => index.toString()}
+                            />
+                    }
                 </View>
             </View>
         </Background>

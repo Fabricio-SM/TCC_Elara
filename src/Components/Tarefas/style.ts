@@ -14,12 +14,13 @@ export const style = StyleSheet.create({
 
     labeltext: {
         color: '#ffffff',
-        marginTop: 10,
-        fontSize: 18,
+        marginTop: 5,
+        marginBottom: 5,
+        fontSize: 15,
     },
 
-    checkbox: {
-        margin: 8,
+    icon: {
+        marginTop: '6.5%',
     },
 
     hr:{

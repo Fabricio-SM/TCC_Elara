@@ -5,8 +5,9 @@ export const style = StyleSheet.create({
     label2: {
         color: '#ffffff',
         marginTop: 10,
-        textAlign: 'left',
-        fontSize: 18,
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
     },
 
     label: {
@@ -17,8 +18,11 @@ export const style = StyleSheet.create({
     },
 
     text: {
-        marginTop: 25,
         color: '#ffffff',
+        marginTop: 25,
+        marginBottom: 5,
+        textAlign: 'left',
+        fontSize: 18,
 
     },
 
@@ -26,6 +30,11 @@ export const style = StyleSheet.create({
         marginTop: 80,
         width: '90%',       
     },
+
+    view2: {
+        height: '25%',      
+    },
+
 
     rowView: {
         marginLeft: 20,
@@ -35,7 +44,7 @@ export const style = StyleSheet.create({
 
     colView: {
         flexDirection:'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
     },
 
     hr:{
@@ -54,7 +63,7 @@ export const style = StyleSheet.create({
     },
 
     textButton: {
-        marginLeft: 8,
+        marginTop: 5,
         color: THEME.COLORS.TEXT,
         fontSize: 18,
     },
@@ -73,7 +82,7 @@ export const style = StyleSheet.create({
         marginTop: 20,
         alignSelf: 'center',
         alignItems: 'center',
-        width: 80,
+        width: 100,
         height: 40,
         backgroundColor: THEME.COLORS.BUTTON_COLOR_ALERT,
         borderRadius: 7,

@@ -38,6 +38,7 @@ export function Home() {
                     <Pressable>
                         <Icon color='#ffffff'size={30} name="clock-time-three-outline" type="material-community" onPress={() => {}}/>
                     </Pressable>
+                    <Icon color='#851397'size={40} name="settings"  onPress={() => nav.navigate("lista")}/>
                     <Pressable>
                         <Icon color='#ffffff' size={30} name="help-circle-outline" type="material-community" onPress={() => {}}/>
                     </Pressable>

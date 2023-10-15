@@ -32,7 +32,7 @@ export const style = StyleSheet.create({
     },
 
     view2: {
-        height: '25%',      
+        height: '30%',      
     },
 
 

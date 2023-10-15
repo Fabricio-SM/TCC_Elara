@@ -138,7 +138,7 @@ export function Lista() {
               </Pressable>
             </View>
 
-            <View>
+            <View style={style.rowView}>
               <Pressable style={style.button} onPress={() => {}}>
                 <Text style={style.textButton}>Salvar</Text>
               </Pressable>

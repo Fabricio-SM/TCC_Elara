@@ -38,6 +38,10 @@ export const style = StyleSheet.create({
         backgroundColor : '#464545',
     },
 
+    pressable: {
+        borderColor: '#ffffff',
+    },
+
     view2: {
         height: '50%',
         width: '100%',   

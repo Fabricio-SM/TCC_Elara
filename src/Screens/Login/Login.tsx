@@ -11,7 +11,7 @@ import { PlanetImage } from "../../Components/Image";
 import { Input } from "../../Components/Input/Input";
 import { style } from "./style";
 import { Background } from "../../Components/Background/Background";
-import { saveData } from "../../services/saveData";
+import { saveData } from "../../services/Storage/saveData";
 
 type UserData = {
     email: string,

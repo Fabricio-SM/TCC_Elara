@@ -36,14 +36,14 @@ export function Permissoes() {
                                 isOn={false}
                                 onColor="green"
                                 offColor="white"
-                                size="small"
+                                size="medium"
                                 onToggle={isOn => console.log("changed to : ", isOn)}
                             />
                         </View>
 
                         <View style={style.rowView}>
                             <Text style={style.text}>Acesso ao microfone</Text>
-                            <ToggleSwitch 
+                            <ToggleSwitch
                                 
                                 isOn={false}
                                 onColor="green"

@@ -6,6 +6,7 @@ export function removeWords(phrase: string) {
         'previsao', 'do', 'em', 'para', 'video',
         'procurar', 'adicionar', 'uma', 'nova',
         'chamada', 'com', 'o', 'criar', 'no',
+        'abrir', 'aplicativo'
     ];
 
     const phraseSplited = cleanedInput.split(' ');

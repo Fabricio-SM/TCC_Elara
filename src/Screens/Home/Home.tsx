@@ -14,6 +14,7 @@ import { weatherRequest } from '../../services/Requests/weatherRequest';
 import { videoRequest, webRequest } from '../../services/Requests/searchRequest';
 import { chooseRequestEndpoint } from '../../services/Requests/toDoListRequest';
 import { SpeakModule } from '../../services/Voice/SpeakModule';
+import { openApplication } from '../../services/Requests/openRequest';
 
 export function Home() {
     const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -96,6 +97,16 @@ export function Home() {
                         break;
 
                     case 'open':
+                        const { openMessage, urlApp } = await openApplication(audioTranscribed);
+
+                        message = openMessage;
+
+                        if (urlApp != null) {
+                            console.log('Message IF- ', message);
+
+                            Linking.openURL(urlApp);
+                        }
+
                         break;
 
                     case 'weather':
@@ -193,7 +204,7 @@ export function Home() {
                     <Pressable>
                         <Icon color='#ffffff' size={30} name="clock-time-three-outline" type="material-community" onPress={() => { }} />
                     </Pressable>
-                    <Icon color='#851397'size={40} name="settings"  onPress={() => nav.navigate("lista")}/>
+                    <Icon color='#851397' size={40} name="settings" onPress={() => nav.navigate("lista")} />
                     <Pressable>
                         <Icon color='#ffffff' size={30} name="help-circle-outline" type="material-community" onPress={() => { }} />
                     </Pressable>

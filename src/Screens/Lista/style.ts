@@ -2,12 +2,15 @@ import { THEME } from "../../Themes";
 import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
-    label2: {
-        color: '#ffffff',
-        marginTop: 10,
-        textAlign: 'center',
-        fontSize: 20,
-        fontWeight: 'bold',
+    view: {
+        marginTop: 80,
+        width: '90%',       
+    },
+
+    rowView: {
+        marginLeft: 20,
+        flexDirection:'row',
+        justifyContent: 'space-between',
     },
 
     label: {
@@ -17,6 +20,28 @@ export const style = StyleSheet.create({
         marginBottom: 20,
     },
 
+    hr:{
+        borderBottomColor: 'white',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    
+    colView: {
+        flexDirection:'column',
+        justifyContent: 'center',
+    },
+
+    view2: {
+        height: '30%',      
+    },
+
+    label2: {
+        color: '#ffffff',
+        marginTop: 10,
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+
     text: {
         color: '#ffffff',
         marginTop: 25,
@@ -24,42 +49,6 @@ export const style = StyleSheet.create({
         textAlign: 'left',
         fontSize: 18,
 
-    },
-
-    view: {
-        marginTop: 80,
-        width: '90%',       
-    },
-
-    view2: {
-        height: '30%',      
-    },
-
-
-    rowView: {
-        marginLeft: 20,
-        flexDirection:'row',
-        justifyContent: 'space-between',
-    },
-
-    colView: {
-        flexDirection:'column',
-        justifyContent: 'center',
-    },
-
-    hr:{
-        borderBottomColor: 'white',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-    },
-
-    body: {
-        marginBottom: '120%',
-    },
-
-    pressable: {
-        padding: 8,
-        flexDirection:'row',
-        borderColor: '#ffffff',
     },
 
     textButton: {
@@ -87,4 +76,5 @@ export const style = StyleSheet.create({
         backgroundColor: THEME.COLORS.BUTTON_COLOR_ALERT,
         borderRadius: 7,
     },
+
 });

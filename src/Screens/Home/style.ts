@@ -1,7 +1,17 @@
-import { THEME } from "../../Themes";
 import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
+    view: {
+        marginTop: 80,
+        width: '100%',       
+    },
+
+    rowView: {
+        marginLeft: 20,
+        flexDirection:'row',
+        justifyContent: 'space-between',
+    },
+
     label2: {
         color: '#ffffff',
         marginTop: 10,
@@ -16,27 +26,9 @@ export const style = StyleSheet.create({
         marginBottom: 20,
     },
 
-    text: {
-        marginTop: 25,
-        color: '#ffffff',
-
-    },
-
-    view: {
-        marginTop: 80,
-        width: '100%',       
-    },
-
-    view2: {
-        height: '50%',
-        width: '100%',   
-        backgroundColor: '#2c2c2c',  
-    },
-
-    rowView: {
-        marginLeft: 20,
-        flexDirection:'row',
-        justifyContent: 'space-between',
+    hr:{
+        borderBottomColor: 'white',
+        borderBottomWidth: StyleSheet.hairlineWidth,
     },
 
     rowView2: {
@@ -46,33 +38,10 @@ export const style = StyleSheet.create({
         backgroundColor : '#464545',
     },
 
-    hr:{
-        borderBottomColor: 'white',
-        borderBottomWidth: StyleSheet.hairlineWidth,
+    view2: {
+        height: '50%',
+        width: '100%',   
+        backgroundColor: '#2c2c2c',  
     },
 
-    body: {
-        marginBottom: '120%',
-    },
-
-    pressable: {
-        padding: 8,
-        flexDirection:'row',
-        borderColor: '#ffffff',
-    },
-
-    button: {
-        marginTop: 20,
-        alignSelf: 'center',
-        alignItems: 'center',
-        width: 100,
-        height: 40,
-        backgroundColor: THEME.COLORS.BUTTON_COLOR_LINK,
-        borderRadius: 7,
-    },
-
-    hIcon: {
-        color: '#ffffff',
-        size: 18,
-    },
 });

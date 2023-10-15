@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Pressable, FlatList, ScrollView } from "react-native";
+import { View, Text, Pressable, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CheckBox, Icon } from "react-native-elements";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -20,7 +20,8 @@ interface TaskData {
   concluida: boolean;
 }
 
-export function Lista() {
+export function Lista({ route }: any) {
+  const listName: string = route.params.nomeLista;
   const [show, setShow] = useState<boolean>(false);
   const [tasks, setTasks] = useState<TaskData[]>([
     {
@@ -72,7 +73,7 @@ export function Lista() {
         <View>
           <View>
             <View style={style.rowView}>
-              <Text style={style.label}>Lista 01</Text>
+              <Text style={style.label}>{listName}</Text>
 
               <Pressable>
                 <Icon
@@ -109,7 +110,7 @@ export function Lista() {
               </View>
               <View style={style.colView}>
                 <Text style={style.text}>Concluido</Text>
-                <CheckBox center={true} ></CheckBox>
+                <CheckBox center={true}></CheckBox>
               </View>
             </View>
           </View>

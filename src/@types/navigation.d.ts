@@ -8,7 +8,7 @@ export declare global {
             configs: undefined,
             permissoes: undefined,
             sobre: undefined,
-            lista: undefined,
+            lista: { nomeLista },
         }
     }
 }

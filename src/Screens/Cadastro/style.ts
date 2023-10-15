@@ -2,11 +2,10 @@ import { THEME } from "../../Themes";
 import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
-    label2: {
-        color: '#ffffff',
-        marginTop: 10,
-        textAlign: 'left',
-        fontSize: 18,
+    view: {
+        marginTop: 80,
+        width: '70%',
+        
     },
 
     label: {
@@ -14,16 +13,6 @@ export const style = StyleSheet.create({
         fontSize: 30,
         textAlign: 'center',
         marginBottom: 20,
-    },
-
-    text: {
-        color: '#ffffff',
-    },
-
-    view: {
-        marginTop: 80,
-        width: '70%',
-        
     },
 
     rowView: {
@@ -41,6 +30,12 @@ export const style = StyleSheet.create({
         borderRadius: 7,
     },
 
+    textButton: {
+        marginTop: 6,
+        color: THEME.COLORS.TEXT,
+        fontSize: 18,
+    },
+
     button2: {
         marginTop: 20,
         alignSelf: 'center',
@@ -50,10 +45,5 @@ export const style = StyleSheet.create({
         backgroundColor: THEME.COLORS.BUTTON_COLOR_ALERT,
         borderRadius: 7,
     },
-
-    textButton: {
-        marginTop: 6,
-        color: THEME.COLORS.TEXT,
-        fontSize: 18,
-    },
+    
 });

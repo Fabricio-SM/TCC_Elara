@@ -107,10 +107,6 @@ export function Login() {
                         )}
                     />
 
-                    <Text style={style.labelSenha}>
-                        Esqueci a senha
-                    </Text>
-
                     <Controller
                         control={control}
                         name="password"

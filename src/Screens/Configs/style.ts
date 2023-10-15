@@ -1,27 +1,7 @@
 import { THEME } from "../../Themes";
 import { StyleSheet } from "react-native";
 
-export const style = StyleSheet.create({
-    label2: {
-        color: '#ffffff',
-        marginTop: 10,
-        textAlign: 'left',
-        fontSize: 18,
-    },
-
-    label: {
-        color: '#ffffff',
-        fontSize: 30,
-        textAlign: 'center',
-        marginBottom: 20,
-    },
-
-    text: {
-        marginTop: 25,
-        color: '#ffffff',
-
-    },
-
+export const style = StyleSheet.create({   
     view: {
         marginTop: 80,
         width: '90%',       
@@ -32,6 +12,13 @@ export const style = StyleSheet.create({
         flexDirection:'row',
         justifyContent: 'space-between',
     },
+ 
+    label: {
+        color: '#ffffff',
+        fontSize: 30,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
 
     hr:{
         borderBottomColor: 'white',
@@ -40,6 +27,13 @@ export const style = StyleSheet.create({
 
     body: {
         marginBottom: '120%',
+    },
+
+    label2: {
+        color: '#ffffff',
+        marginTop: 10,
+        textAlign: 'left',
+        fontSize: 18,
     },
 
     pressable: {
@@ -53,4 +47,5 @@ export const style = StyleSheet.create({
         color: THEME.COLORS.TEXT,
         fontSize: 18,
     },
+
 });

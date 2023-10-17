@@ -152,9 +152,6 @@ export function Home() {
             getData("access_token"),
         ]);
 
-        console.log(email, token);
-        console.log(componentCard);
-
         const { data, status } = await axios.get(
             `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/${email}`,
             {
@@ -228,7 +225,6 @@ export function Home() {
     return (
         <Background>
             <View style={style.view}>
-                {/* onPress temporariamente para testes */}
                 <View style={style.rowView}>
                     <Text style={style.label}>Elara</Text>
 
@@ -247,7 +243,6 @@ export function Home() {
                     <View style={{ opacity: 0.5 }}>
                         <PlanetImage />
                     </View>
-                    {/* <View></View> espaçamento  */}
 
                     {
                         activateService == true

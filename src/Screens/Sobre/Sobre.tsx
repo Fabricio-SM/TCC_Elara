@@ -34,9 +34,6 @@ export function Sobre() {
                     <View style={style.body}></View>
                     
                 </View>
-                <View style={{ opacity: 0.5 }}>
-                    <PlanetImage />
-                </View>
             </SafeAreaView>  
         </Background>
     );

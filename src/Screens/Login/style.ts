@@ -19,6 +19,10 @@ export const style = StyleSheet.create({
         marginBottom: 5,
     },
 
+    space: {
+        height: '9%'
+    },
+
     errorMessage: {
         color: THEME.COLORS.ERROR_MESSAGE,
         textAlign: 'center',

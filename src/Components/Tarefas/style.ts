@@ -7,6 +7,16 @@ export const style = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
+    space: {
+        flexDirection:'row',
+        width: '5%', 
+    },
+
+    rowView2: {
+        flexDirection:'row',
+        justifyContent: 'space-between',
+    },
+
     colView: {
         flexDirection:'column',
         justifyContent: 'space-between',
@@ -16,11 +26,17 @@ export const style = StyleSheet.create({
         color: '#ffffff',
         marginTop: 5,
         marginBottom: 5,
+        fontSize: 18,
+    },
+
+    labelTextSub: {
+        color: '#ffffff',
+        marginBottom: 5,
         fontSize: 15,
     },
 
     icon: {
-        marginTop: '6.5%',
+        marginTop: '10%',
     },
 
     hr:{

@@ -148,6 +148,8 @@ export function Perfil() {
                         </Pressable>
                     </View>
 
+                    <View style={style.space} />
+
                     <Controller
                         control={control}
                         name="nome"
@@ -186,6 +188,7 @@ export function Perfil() {
                     />
 
                     <Input
+                        showSoftInputOnFocus={false}
                         labelValue="Data de nascimento"
                         editable={canEdit}
                         value={convertDateToString(date)}
@@ -221,10 +224,8 @@ export function Perfil() {
                             </Pressable>
                         </View>
                     }
+                    {/* <View style={style.space}/> */}
 
-                    <View style={{ opacity: 0.5 }}>
-                        <PlanetImage />
-                    </View>
                 </View>
             </SafeAreaView>
         </Background>

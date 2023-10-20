@@ -6,7 +6,6 @@ import { Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { style } from "./style";
 
-import { Background } from "../../Components/Background/Background";
 import { CardsList } from "../../Components/CardsList/CardsList";
 import { PlanetImage } from "../../Components/Image";
 
@@ -20,6 +19,7 @@ import { getData } from "../../services/Storage/getData";
 import { convertDateToString } from "../../utils/convertDate";
 import { Cards } from "../../Components/Card/Card";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import { BackgroundWithoutPlanet } from "../../Components/BackgroundWithoutPlanet/BackgroundWithoutPlanet";
 
 interface Card {
     title: string;
@@ -223,7 +223,7 @@ export function Home() {
 
 
     return (
-        <Background>
+        <BackgroundWithoutPlanet>
             <View style={style.view}>
                 <View style={style.rowView}>
                     <Text style={style.label}>Elara</Text>
@@ -299,6 +299,6 @@ export function Home() {
                     }
                 </View>
             </View>
-        </Background>
+        </BackgroundWithoutPlanet>
     );
 }

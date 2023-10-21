@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as FileSystem from 'expo-file-system';
 import React, { useState, useEffect } from "react";
-import { Text, View, Pressable, FlatList, Linking, Alert, ActivityIndicator } from "react-native";
+import { Text, View, Pressable, FlatList, Linking, Alert, ActivityIndicator, RefreshControl } from "react-native";
 import { Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { style } from "./style";

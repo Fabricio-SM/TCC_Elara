@@ -14,6 +14,7 @@ import { style } from "./style";
 import { Input } from "../../Components/Input/Input";
 import { Background } from "../../Components/Background/Background";
 import { PlanetImage } from "../../Components/Image";
+import { ModalExclude } from "../../Components/Modal";
 
 import { getData } from "../../services/Storage/getData";
 import { saveData } from "../../services/Storage/saveData";
@@ -44,6 +45,7 @@ export function Perfil() {
     const { control, handleSubmit, formState: { errors } } = useForm<FormProps>({
         resolver: yupResolver(schema),
     });
+    const [modalStatus, setModalStatus] = useState<boolean>(false)
 
     useEffect(() => {
         async function getInfosUser() {
@@ -136,7 +138,7 @@ export function Perfil() {
 
     return (
         <Background>
-            <SafeAreaView style={style.view}>
+            <SafeAreaView style={[style.view, modalStatus ? { backgroundColor: "black", opacity: 0.5 } : style.view]}>
                 <View>
                     <View style={style.rowView}>
                         <Pressable>
@@ -207,10 +209,22 @@ export function Perfil() {
                     <View style={style.rowView}>
                         <Text style={style.text}>Excluir histórico de fala</Text>
 
-                        <Pressable style={style.button2} onPress={() => { handleDeleteHistApi() }}>
+                        <Pressable style={style.button2} onPress={() => { setModalStatus(true) }}>
                             <Text style={style.textButton}>Excluir</Text>
                         </Pressable>
+
+                        <ModalExclude
+                            onClose={() => setModalStatus(false) }
+                            handleApiDelete={() => {
+                                setModalStatus(false);
+                                handleDeleteHistApi();
+                            }}
+                            message="Tem certeza que deseja excluir o histórico de fala?"
+                            visible={modalStatus}
+                        />
                     </View>
+
+
 
                     {
                         canEdit &&

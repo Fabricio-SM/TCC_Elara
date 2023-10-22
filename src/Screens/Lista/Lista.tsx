@@ -148,7 +148,7 @@ export function Lista({ route }: any) {
 
     return (
         <Background>
-            <SafeAreaView style={style.view}>
+            <SafeAreaView  style={[style.view, modalStatus ? { backgroundColor: "black", opacity: 0.5 } : style.view]}>
                 <View>
                     <View>
                         <View style={style.rowView}>

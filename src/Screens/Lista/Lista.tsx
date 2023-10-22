@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { View, Text, Pressable, FlatList, Alert } from "react-native";
+import { View, Text, Pressable, FlatList, Alert, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CheckBox, Icon } from "react-native-elements";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -31,9 +31,10 @@ export function Lista({ route }: any) {
     const listName: string = route.params.nomeLista;
 
     const nav = useNavigation();
+    const [refreshing, setRefreshing] = useState(true);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
-    const [modalStatus, setModalStatus] = useState<boolean>(false)
+    const [modalStatus, setModalStatus] = useState<boolean>(false);
 
     const [listInformation, setListInformation] = useState<ListData>();
     const [listIsChecked, setListIsChecked] = useState<boolean>(false);
@@ -137,6 +138,7 @@ export function Lista({ route }: any) {
                 });
 
                 setTasks(tasks);
+                setRefreshing(false);
             }
         } catch (error) {
             return error;
@@ -148,7 +150,7 @@ export function Lista({ route }: any) {
 
     return (
         <Background>
-            <SafeAreaView  style={[style.view, modalStatus ? { backgroundColor: "black", opacity: 0.5 } : style.view]}>
+            <SafeAreaView style={[style.view, modalStatus ? { backgroundColor: "black", opacity: 0.5 } : style.view]}>
                 <View>
                     <View>
                         <View style={style.rowView}>
@@ -215,6 +217,9 @@ export function Lista({ route }: any) {
                                     concluida={item.concluida}
                                 />
                             )}
+                            refreshControl={
+                                <RefreshControl refreshing={refreshing} onRefresh={getListInformations} />
+                            }
                             keyExtractor={(item, index) => index.toString()}
                         />
 

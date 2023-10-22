@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { Pressable, View, Text } from "react-native";
+import { Pressable, View, Text, Alert } from "react-native";
 import { style } from "./style";
 import { Icon } from "react-native-elements";
 import { convertDateToString } from "../../utils/convertDate";
 import Checkbox from "expo-checkbox";
+import { ModalExclude } from "../Modal";
+import { getData } from "../../services/Storage/getData";
+import axios from "axios";
+import { ModalEditTask } from "../ModalEditTask/ModalEditTask";
 
 interface TarefaProps {
     nomeTarefa: string;
@@ -12,6 +16,31 @@ interface TarefaProps {
 }
 
 export function Tarefas(props: TarefaProps) {
+    const [modalExcludeStatus, setModalExcludeStatus] = useState<boolean>(false);
+    const [modalEditStatus, setModalEditStatus] = useState<boolean>(false);
+
+    async function updateTask() {
+        
+    }
+
+    async function handleDeleteTask() {
+        const token = await getData("access_token");
+
+        try {
+            const { data, status } = await axios.delete(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/task/${props.nomeTarefa}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+
+            if (status == 200) {
+                Alert.alert("Tarefa deletada com sucesso");
+            }
+        } catch (error) {
+            return error;
+        }
+    }
+
     return (
         <View>
             <View style={style.hr} />
@@ -21,7 +50,7 @@ export function Tarefas(props: TarefaProps) {
                         style={style.icon}
                         value={props.concluida}
                         color={props.concluida ? "#4630EB" : undefined}
-                        onChange={() => {}}
+                        onChange={() => { }}
                     />
                     <View style={style.space}></View>
                     <View style={style.colView}>
@@ -29,7 +58,7 @@ export function Tarefas(props: TarefaProps) {
                         {
                             props.dataEntrega != null
                                 ? <Text style={style.labelTextSub}>Data de entrega: {convertDateToString(props.dataEntrega)}</Text>
-                                : <Text style={style.labelTextSub}>Data de entrega: 16/05/2003</Text>
+                                : <Text style={style.labelTextSub}>Sem data de entrega</Text>
                         }
                     </View>
                 </View>
@@ -41,19 +70,34 @@ export function Tarefas(props: TarefaProps) {
                             color="#ffffff"
                             name="pen"
                             type="material-community"
-                            onPress={() => { }}
+                            onPress={() => { setModalEditStatus(true) }}
                         />
                     </Pressable>
-                    <View style={style.space}></View>
+                    <ModalEditTask
+                        updateTask={updateTask}
+                        visible={modalEditStatus}
+                        onClose={() => setModalEditStatus(false)} 
+                    />
+                    <View style={style.space} />
                     <Pressable style={style.icon}>
                         <Icon
                             size={32}
                             color="#ffffff"
                             name="trash-can"
                             type="material-community"
-                            onPress={() => { }}
+                            onPress={() => { setModalExcludeStatus(true) }}
                         />
                     </Pressable>
+
+                    <ModalExclude
+                        onClose={() => setModalExcludeStatus(false)}
+                        handleApiDelete={() => {
+                            setModalExcludeStatus(false);
+                            handleDeleteTask();
+                        }}
+                        message="Tem certeza que deseja excluir a tarefa?"
+                        visible={modalExcludeStatus}
+                    />
                 </View>
             </View>
         </View>

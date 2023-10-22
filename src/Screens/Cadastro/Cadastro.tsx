@@ -148,7 +148,7 @@ export function Cadastro() {
                         )}
                     />
 
-                    <Input labelValue="Data de nascimento" defaultValue={convertDateToString(date)} onPressIn={() => setShow(true)} />
+                    <Input showSoftInputOnFocus={false} labelValue="Data de nascimento" defaultValue={convertDateToString(date)} onPressIn={() => setShow(true)} />
                     {
                         show &&
                         <DateTimePicker

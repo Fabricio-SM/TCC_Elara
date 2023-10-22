@@ -10,7 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { PlanetImage } from "../../Components/Image";
 import { Input } from "../../Components/Input/Input";
 import { style } from "./style";
-import { Background } from "../../Components/Background/Background";
+import { BackgroundWithoutPlanet } from "../../Components/BackgroundWithoutPlanet/BackgroundWithoutPlanet";
 import { saveData } from "../../services/Storage/saveData";
 
 type UserData = {
@@ -76,7 +76,7 @@ export function Login() {
     }
 
     return (
-        <Background>
+        <BackgroundWithoutPlanet>
             <SafeAreaView>
                 <PlanetImage />
                 <View style={style.divLogin}>
@@ -107,6 +107,8 @@ export function Login() {
                         )}
                     />
 
+                    <View style={style.space}/>
+
                     <Controller
                         control={control}
                         name="password"
@@ -131,6 +133,6 @@ export function Login() {
                 <Text style={style.text}>Não tem uma conta?</Text>
                 <Text onPress={() => nav.navigate("cadastro")} style={style.actionText}>Cadastre-se</Text>
             </SafeAreaView>
-        </Background>
+        </BackgroundWithoutPlanet>
     )
 }

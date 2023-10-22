@@ -57,9 +57,6 @@ export function Config() {
                     </View>
 
                 </View>
-                <View style={{ opacity: 0.5 }}>
-                    <PlanetImage />
-                </View>
             </SafeAreaView>
         </Background>
     );

@@ -22,9 +22,15 @@ export const style = StyleSheet.create({
 
     },
 
+    space: {
+        height: '20%',
+        
+    },
+
     view: {
         marginTop: 80,
         width: '90%',
+        height: '80%',
         
     },
 

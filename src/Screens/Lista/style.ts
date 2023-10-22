@@ -20,6 +20,10 @@ export const style = StyleSheet.create({
         marginBottom: 20,
     },
 
+    icon: {
+        marginTop: '2%',
+    },
+
     hr:{
         borderBottomColor: 'white',
         borderBottomWidth: StyleSheet.hairlineWidth,
@@ -31,7 +35,7 @@ export const style = StyleSheet.create({
     },
 
     view2: {
-        height: '30%',      
+        height: '65%',      
     },
 
     label2: {

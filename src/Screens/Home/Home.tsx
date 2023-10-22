@@ -1,12 +1,11 @@
 import axios from "axios";
 import * as FileSystem from 'expo-file-system';
 import React, { useState, useEffect } from "react";
-import { Text, View, Pressable, FlatList, Linking, Alert, ActivityIndicator } from "react-native";
+import { Text, View, Pressable, FlatList, Linking, Alert, ActivityIndicator, RefreshControl } from "react-native";
 import { Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { style } from "./style";
 
-import { Background } from "../../Components/Background/Background";
 import { CardsList } from "../../Components/CardsList/CardsList";
 import { PlanetImage } from "../../Components/Image";
 
@@ -20,6 +19,7 @@ import { getData } from "../../services/Storage/getData";
 import { convertDateToString } from "../../utils/convertDate";
 import { Cards } from "../../Components/Card/Card";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import { BackgroundWithoutPlanet } from "../../Components/BackgroundWithoutPlanet/BackgroundWithoutPlanet";
 
 interface Card {
     title: string;
@@ -152,9 +152,6 @@ export function Home() {
             getData("access_token"),
         ]);
 
-        console.log(email, token);
-        console.log(componentCard);
-
         const { data, status } = await axios.get(
             `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/${email}`,
             {
@@ -224,11 +221,50 @@ export function Home() {
         }
     }
 
+    function setComponentForCards() {
+        if (componentCard == 'list') {
+            if (cardList?.length == 0 || cardList == undefined) {
+                return (
+                    <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
+                        Não há items para exibir
+                    </Text>
+                );
+            }
+
+            return (
+                <FlatList
+                    data={cardList}
+                    renderItem={({ item }) => (
+                        <CardsList title={item.title} subTitle={item.subtitle} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            );
+        } else {
+
+            if (card?.length == 0 || card == undefined) {
+                return (
+                    <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
+                        Não há items para exibir
+                    </Text>
+                );
+            }
+
+            return (
+                <FlatList
+                    data={card}
+                    renderItem={({ item }) => (
+                        <Cards title={item.title} subTitle={item.subtitle} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            );
+        }
+    }
 
     return (
-        <Background>
+        <BackgroundWithoutPlanet>
             <View style={style.view}>
-                {/* onPress temporariamente para testes */}
                 <View style={style.rowView}>
                     <Text style={style.label}>Elara</Text>
 
@@ -247,7 +283,6 @@ export function Home() {
                     <View style={{ opacity: 0.5 }}>
                         <PlanetImage />
                     </View>
-                    {/* <View></View> espaçamento  */}
 
                     {
                         activateService == true
@@ -285,25 +320,10 @@ export function Home() {
 
                 <View style={style.view2}>
                     {
-                        componentCard == "list" ?
-                            <FlatList
-                                data={cardList}
-                                renderItem={({ item }) => (
-                                    <CardsList title={item.title} subTitle={item.subtitle} />
-                                )}
-                                keyExtractor={(item, index) => index.toString()}
-                            />
-                            :
-                            <FlatList
-                                data={card}
-                                renderItem={({ item }) => (
-                                    <Cards title={item.title} subTitle={item.subtitle} />
-                                )}
-                                keyExtractor={(item, index) => index.toString()}
-                            />
+                        setComponentForCards()
                     }
                 </View>
             </View>
-        </Background>
+        </BackgroundWithoutPlanet>
     );
 }

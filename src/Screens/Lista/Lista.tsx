@@ -13,6 +13,7 @@ import { convertDateToString, convertTimestampToDate } from "../../utils/convert
 import { Tarefas } from "../../Components/Tarefas/Tarefas";
 import { getData } from "../../services/Storage/getData";
 import { useNavigation } from "@react-navigation/native";
+import { ModalExclude } from "../../Components/Modal";
 
 interface TaskData {
     nomeTarefa: string;
@@ -32,6 +33,7 @@ export function Lista({ route }: any) {
     const nav = useNavigation();
     const [editMode, setEditMode] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
+    const [modalStatus, setModalStatus] = useState<boolean>(false)
 
     const [listInformation, setListInformation] = useState<ListData>();
     const [listIsChecked, setListIsChecked] = useState<boolean>(false);
@@ -224,9 +226,19 @@ export function Lista({ route }: any) {
                         <View style={style.rowView}>
                             <Text style={style.text}>Excluir lista</Text>
 
-                            <Pressable style={style.button2} onPress={handleDeleteList}>
+                            <Pressable style={style.button2} onPress={() => { setModalStatus(true) }}>
                                 <Text style={style.textButton}>Excluir</Text>
                             </Pressable>
+
+                            <ModalExclude
+                                onClose={() => setModalStatus(false)}
+                                handleApiDelete={() => {
+                                    setModalStatus(false);
+                                    handleDeleteList();
+                                }}
+                                message="Tem certeza que deseja excluir a lista de tarefas?"
+                                visible={modalStatus}
+                            />
                         </View>
 
                         {

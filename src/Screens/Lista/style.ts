@@ -2,26 +2,6 @@ import { THEME } from "../../Themes";
 import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
-    label2: {
-        color: '#ffffff',
-        marginTop: 10,
-        textAlign: 'left',
-        fontSize: 18,
-    },
-
-    label: {
-        color: '#ffffff',
-        fontSize: 30,
-        textAlign: 'center',
-        marginBottom: 20,
-    },
-
-    text: {
-        marginTop: 25,
-        color: '#ffffff',
-
-    },
-
     view: {
         marginTop: 80,
         width: '90%',       
@@ -33,23 +13,46 @@ export const style = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
+    label: {
+        color: '#ffffff',
+        fontSize: 30,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+
     hr:{
         borderBottomColor: 'white',
         borderBottomWidth: StyleSheet.hairlineWidth,
     },
-
-    body: {
-        marginBottom: '120%',
+    
+    colView: {
+        flexDirection:'column',
+        justifyContent: 'center',
     },
 
-    pressable: {
-        padding: 8,
-        flexDirection:'row',
-        borderColor: '#ffffff',
+    view2: {
+        height: '30%',      
+    },
+
+    label2: {
+        color: '#ffffff',
+        marginTop: 10,
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+
+    text: {
+        color: '#ffffff',
+        marginTop: 25,
+        marginBottom: 5,
+        textAlign: 'left',
+        fontSize: 18,
+
     },
 
     textButton: {
-        marginLeft: 8,
+        marginTop: 5,
         color: THEME.COLORS.TEXT,
         fontSize: 18,
     },
@@ -68,9 +71,10 @@ export const style = StyleSheet.create({
         marginTop: 20,
         alignSelf: 'center',
         alignItems: 'center',
-        width: 80,
+        width: 100,
         height: 40,
         backgroundColor: THEME.COLORS.BUTTON_COLOR_ALERT,
         borderRadius: 7,
     },
+
 });

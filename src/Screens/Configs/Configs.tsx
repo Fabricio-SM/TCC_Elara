@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { style } from "./style";
 import { Background } from "../../Components/Background/Background";
 import { PlanetImage } from "../../Components/Image";
-import { deleteData } from "../../services/deleteData";
+import { deleteData } from "../../services/Storage/deleteData";
 
 
 export function Config() {

@@ -12,14 +12,6 @@ export const style = StyleSheet.create({
         backgroundColor: THEME.COLORS.MODAL_COLOR,
     },
 
-    labelSenha: {
-        color: THEME.COLORS.TEXT,
-        marginTop: 10,
-        marginBottom: 10,
-        textAlign: 'right',
-        fontSize: 12,
-    },
-
     label: {
         color: THEME.COLORS.TEXT,
         fontSize: 30,
@@ -27,14 +19,10 @@ export const style = StyleSheet.create({
         marginBottom: 5,
     },
 
-    text: {
-        color: THEME.COLORS.TEXT,
+    errorMessage: {
+        color: THEME.COLORS.ERROR_MESSAGE,
         textAlign: 'center',
-    },
-
-    actionText: {
-        color: THEME.COLORS.TEXT_LINK,
-        textAlign: 'center',
+        marginBottom: 5
     },
 
     button: {
@@ -53,9 +41,14 @@ export const style = StyleSheet.create({
         fontSize: 18,
     },
 
-    errorMessage: {
-        color: THEME.COLORS.ERROR_MESSAGE,
+    text: {
+        color: THEME.COLORS.TEXT,
         textAlign: 'center',
-        marginBottom: 5
-    }
+    },
+
+    actionText: {
+        color: THEME.COLORS.TEXT_LINK,
+        textAlign: 'center',
+    },
+    
 })

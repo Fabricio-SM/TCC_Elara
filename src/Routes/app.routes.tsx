@@ -8,7 +8,8 @@ import { Config } from "../Screens/Configs/Configs";
 import { Permissoes } from "../Screens/Permissoes/Permissoes";
 import { Sobre } from "../Screens/Sobre/Sobre";
 import { Home } from "../Screens/Home/Home";
-import { getData } from "../services/getData";
+import { getData } from "../services/Storage/getData";
+import { Lista } from "../Screens/Lista/Lista";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ export function AppRoutes() {
             <Stack.Screen name="configs" component={Config} />
             <Stack.Screen name="permissoes" component={Permissoes} />
             <Stack.Screen name="sobre" component={Sobre} />
+            <Stack.Screen name="lista" component={Lista} />
         </Stack.Navigator>
     );
 }

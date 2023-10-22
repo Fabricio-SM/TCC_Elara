@@ -16,9 +16,9 @@ import { Background } from "../../Components/Background/Background";
 import { PlanetImage } from "../../Components/Image";
 import { ModalExclude } from "../../Components/Modal";
 
-import { getData } from "../../services/getData";
+import { getData } from "../../services/Storage/getData";
+import { saveData } from "../../services/Storage/saveData";
 import { convertDateToString, convertTimestampToDate } from "../../utils/convertDate";
-import { saveData } from "../../services/saveData";
 
 type UserData = {
     nome: string;

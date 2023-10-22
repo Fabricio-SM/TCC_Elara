@@ -221,6 +221,46 @@ export function Home() {
         }
     }
 
+    function setComponentForCards() {
+        if (componentCard == 'list') {
+            if (cardList?.length == 0 || cardList == undefined) {
+                return (
+                    <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
+                        Não há items para exibir
+                    </Text>
+                );
+            }
+
+            return (
+                <FlatList
+                    data={cardList}
+                    renderItem={({ item }) => (
+                        <CardsList title={item.title} subTitle={item.subtitle} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            );
+        } else {
+
+            if (card?.length == 0 || card == undefined) {
+                return (
+                    <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
+                        Não há items para exibir
+                    </Text>
+                );
+            }
+
+            return (
+                <FlatList
+                    data={card}
+                    renderItem={({ item }) => (
+                        <Cards title={item.title} subTitle={item.subtitle} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            );
+        }
+    }
 
     return (
         <BackgroundWithoutPlanet>
@@ -280,22 +320,7 @@ export function Home() {
 
                 <View style={style.view2}>
                     {
-                        componentCard == "list" ?
-                            <FlatList
-                                data={cardList}
-                                renderItem={({ item }) => (
-                                    <CardsList title={item.title} subTitle={item.subtitle} />
-                                )}
-                                keyExtractor={(item, index) => index.toString()}
-                            />
-                            :
-                            <FlatList
-                                data={card}
-                                renderItem={({ item }) => (
-                                    <Cards title={item.title} subTitle={item.subtitle} />
-                                )}
-                                keyExtractor={(item, index) => index.toString()}
-                            />
+                        setComponentForCards()
                     }
                 </View>
             </View>

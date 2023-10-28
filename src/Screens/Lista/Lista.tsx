@@ -38,7 +38,16 @@ export function Lista({ route }: any) {
     const [listInformation, setListInformation] = useState<ListData>();
     const [listIsChecked, setListIsChecked] = useState<boolean>(false);
     const [tasks, setTasks] = useState<TaskData[]>([]);
-    const [date, setDate] = useState<Date>(new Date());
+    const [date, setDate] = useState<Date | null>(null);
+
+    function verifyIfDateIsNull() {
+        if (date == null) {
+            return new Date();
+        }
+        else {
+            return new Date(date);
+        }
+    }
 
     const onChange = (selectedDate: any) => {
         setShow(false);
@@ -123,7 +132,10 @@ export function Lista({ route }: any) {
                 }
 
                 setListIsChecked(listInfo.concluido);
-                setDate(new Date(listInfo.dataEntrega));
+
+                if (listInfo.dataEntrega != null) {
+                    setDate(new Date(listInfo.dataEntrega));
+                }
                 setListInformation(listInfo);
 
                 const tasks = data.Tarefa.map((el: any) => {
@@ -178,14 +190,14 @@ export function Lista({ route }: any) {
                                     showSoftInputOnFocus={false}
                                     labelValue="Data de entrega"
                                     editable={editMode}
-                                    value={convertDateToString(date)}
+                                    value={date != null ? convertDateToString(date) : "Sem data de entrega"}
                                     onPressIn={() => setShow(true)}
                                 />
                                 {
                                     show &&
                                     <DateTimePicker
                                         testID="datePicker"
-                                        value={date}
+                                        value={verifyIfDateIsNull()}
                                         mode="date"
                                         onChange={onChange}
                                     />

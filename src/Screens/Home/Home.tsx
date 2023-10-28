@@ -29,6 +29,7 @@ interface Card {
 export function Home() {
     const [cardList, setCardList] = useState<Card[] | undefined>(undefined);
     const [card, setCard] = useState<Card[] | undefined>(undefined);
+    const [refreshing, setRefreshing] = useState(true);
 
     const [componentCard, setComponentCard] = useState<string>("historic");
     const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -163,15 +164,22 @@ export function Home() {
 
         if (status == 200) {
             const cards = data.listas.map((el: any) => {
+                let sub: string = 'Sem data de entrega';
+                
+                if (el.dataEntrega != null) {
+                    sub = `Data de entrega: ${convertDateToString(
+                        el.dataEntrega
+                    )}`
+                }
+
                 return {
                     title: el.nomeLista,
-                    subtitle: `Data de entrega: ${convertDateToString(
-                        el.dataEntrega
-                    )}`,
+                    subtitle: sub,
                 };
             });
 
             setCardList(cards);
+            setRefreshing(false)
         }
     }
 
@@ -237,6 +245,9 @@ export function Home() {
                     renderItem={({ item }) => (
                         <CardsList title={item.title} subTitle={item.subtitle} />
                     )}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={handleApi} />
+                    }
                     keyExtractor={(item, index) => index.toString()}
                 />
             );

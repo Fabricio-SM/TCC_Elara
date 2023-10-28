@@ -53,9 +53,9 @@ export function convertStringToDate(dateString: string) {
 
 function getNUmberOfMonth(nameMonth: string) {
     const months = [
-      "janeiro", "fevereiro", "março", "abril", "maio", "junho",
-      "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+        "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
     ];
     const monthIndex = months.findIndex(month => month.toLowerCase() === nameMonth.toLowerCase());
     return monthIndex !== -1 ? monthIndex : 0;
-  }
+}

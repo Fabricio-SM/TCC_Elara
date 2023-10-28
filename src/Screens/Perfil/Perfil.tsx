@@ -13,7 +13,6 @@ import { useForm, Controller } from "react-hook-form";
 import { style } from "./style";
 import { Input } from "../../Components/Input/Input";
 import { Background } from "../../Components/Background/Background";
-import { PlanetImage } from "../../Components/Image";
 import { ModalExclude } from "../../Components/Modal";
 
 import { getData } from "../../services/Storage/getData";

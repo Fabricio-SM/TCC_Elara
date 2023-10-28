@@ -1,13 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { View, Text, Pressable, FlatList, Alert } from "react-native";
+import { View, Text, Pressable, FlatList, Alert, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CheckBox, Icon } from "react-native-elements";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { style } from "./style";
 import { Background } from "../../Components/Background/Background";
-import { PlanetImage } from "../../Components/Image";
 import { Input } from "../../Components/Input/Input";
 import { convertDateToString, convertTimestampToDate } from "../../utils/convertDate";
 import { Tarefas } from "../../Components/Tarefas/Tarefas";
@@ -31,14 +30,24 @@ export function Lista({ route }: any) {
     const listName: string = route.params.nomeLista;
 
     const nav = useNavigation();
+    const [refreshing, setRefreshing] = useState(true);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
-    const [modalStatus, setModalStatus] = useState<boolean>(false)
+    const [modalStatus, setModalStatus] = useState<boolean>(false);
 
     const [listInformation, setListInformation] = useState<ListData>();
     const [listIsChecked, setListIsChecked] = useState<boolean>(false);
     const [tasks, setTasks] = useState<TaskData[]>([]);
-    const [date, setDate] = useState<Date>(new Date());
+    const [date, setDate] = useState<Date | null>(null);
+
+    function verifyIfDateIsNull() {
+        if (date == null) {
+            return new Date();
+        }
+        else {
+            return new Date(date);
+        }
+    }
 
     const onChange = (selectedDate: any) => {
         setShow(false);
@@ -123,7 +132,10 @@ export function Lista({ route }: any) {
                 }
 
                 setListIsChecked(listInfo.concluido);
-                setDate(new Date(listInfo.dataEntrega));
+
+                if (listInfo.dataEntrega != null) {
+                    setDate(new Date(listInfo.dataEntrega));
+                }
                 setListInformation(listInfo);
 
                 const tasks = data.Tarefa.map((el: any) => {
@@ -137,6 +149,7 @@ export function Lista({ route }: any) {
                 });
 
                 setTasks(tasks);
+                setRefreshing(false);
             }
         } catch (error) {
             return error;
@@ -148,7 +161,7 @@ export function Lista({ route }: any) {
 
     return (
         <Background>
-            <SafeAreaView  style={[style.view, modalStatus ? { backgroundColor: "black", opacity: 0.5 } : style.view]}>
+            <SafeAreaView style={[style.view, modalStatus ? { backgroundColor: "black", opacity: 0.5 } : style.view]}>
                 <View>
                     <View>
                         <View style={style.rowView}>
@@ -177,14 +190,14 @@ export function Lista({ route }: any) {
                                     showSoftInputOnFocus={false}
                                     labelValue="Data de entrega"
                                     editable={editMode}
-                                    value={convertDateToString(date)}
+                                    value={date != null ? convertDateToString(date) : "Sem data de entrega"}
                                     onPressIn={() => setShow(true)}
                                 />
                                 {
                                     show &&
                                     <DateTimePicker
                                         testID="datePicker"
-                                        value={date}
+                                        value={verifyIfDateIsNull()}
                                         mode="date"
                                         onChange={onChange}
                                     />
@@ -215,6 +228,9 @@ export function Lista({ route }: any) {
                                     concluida={item.concluida}
                                 />
                             )}
+                            refreshControl={
+                                <RefreshControl refreshing={refreshing} onRefresh={getListInformations} />
+                            }
                             keyExtractor={(item, index) => index.toString()}
                         />
 

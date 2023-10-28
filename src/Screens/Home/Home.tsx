@@ -9,6 +9,8 @@ import { style } from "./style";
 import { CardsList } from "../../Components/CardsList/CardsList";
 import { PlanetImage } from "../../Components/Image";
 
+import helpers from "../../assets/helpers.json";
+
 import { inputTypeAnalysis } from "../../utils/inputAnalysis";
 import { weatherRequest } from '../../services/Requests/weatherRequest';
 import { videoRequest, webRequest } from '../../services/Requests/searchRequest';
@@ -28,7 +30,8 @@ interface Card {
 
 export function Home() {
     const [cardList, setCardList] = useState<Card[] | undefined>(undefined);
-    const [card, setCard] = useState<Card[] | undefined>(undefined);
+    const [cardHistoric, setCardHistoric] = useState<Card[] | undefined>(undefined);
+    const [card, setCard] = useState<any>(helpers.suggestions);
     const [refreshing, setRefreshing] = useState(true);
 
     const [componentCard, setComponentCard] = useState<string>("historic");
@@ -78,10 +81,16 @@ export function Home() {
                     }
                 }
             });
+
     }, []);
 
     useEffect(() => {
         async function requests() {
+            const [email, token] = await Promise.all([
+                getData("email"),
+                getData("access_token"),
+            ]);
+
             if (activateService && audioTranscribed) {
                 const intention = inputTypeAnalysis(audioTranscribed);
                 let message = undefined;
@@ -137,17 +146,27 @@ export function Home() {
 
                 SpeakModule(message);
 
+                await axios.post(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/historic/${email}`,
+                    {
+                        "pedido": audioTranscribed,
+                        "resposta": message
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        }
+                    }).then(() => console.log("Historico salvo"));
+
                 setActivateService(false);
                 setAudioTranscribed(null);
             }
         }
 
         requests();
+        handleApi();
     });
 
     async function handleApi() {
-        setComponentCard('list');
-
         const [email, token] = await Promise.all([
             getData("email"),
             getData("access_token"),
@@ -163,9 +182,9 @@ export function Home() {
         );
 
         if (status == 200) {
-            const cards = data.listas.map((el: any) => {
+            const cardsList = data.listas.map((el: any) => {
                 let sub: string = 'Sem data de entrega';
-                
+
                 if (el.dataEntrega != null) {
                     sub = `Data de entrega: ${convertDateToString(
                         el.dataEntrega
@@ -178,8 +197,16 @@ export function Home() {
                 };
             });
 
-            setCardList(cards);
-            setRefreshing(false)
+            const cardHistoric = data.historico.map((el: any) => {
+                return {
+                    title: el.pedido,
+                    subtitle: el.resposta
+                }
+            })
+
+            setCardHistoric(cardHistoric);
+            setCardList(cardsList);
+            setRefreshing(false);
         }
     }
 
@@ -236,6 +263,7 @@ export function Home() {
                     <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
                         Não há items para exibir
                     </Text>
+                    
                 );
             }
 
@@ -251,8 +279,31 @@ export function Home() {
                     keyExtractor={(item, index) => index.toString()}
                 />
             );
-        } else {
+        }
+        else if (componentCard == 'historic') {
 
+            if (cardHistoric?.length == 0 || cardHistoric == undefined) {
+                return (
+                    <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
+                        Não há items para exibir
+                    </Text>
+                );
+            }
+
+            return (
+                <FlatList
+                    data={cardHistoric}
+                    renderItem={({ item }) => (
+                        <Cards title={item.title} subTitle={item.subtitle} />
+                    )}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={handleApi} />
+                    }
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            );
+        }
+        else {
             if (card?.length == 0 || card == undefined) {
                 return (
                     <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
@@ -267,6 +318,9 @@ export function Home() {
                     renderItem={({ item }) => (
                         <Cards title={item.title} subTitle={item.subtitle} />
                     )}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={handleApi} />
+                    }
                     keyExtractor={(item, index) => index.toString()}
                 />
             );
@@ -316,7 +370,7 @@ export function Home() {
                         color={componentCard == "list" ? "#851397" : "#ffffff"}
                         size={40}
                         name="list"
-                        onPress={handleApi}
+                        onPress={() => setComponentCard('list')}
                     />
                     <Pressable>
                         <Icon

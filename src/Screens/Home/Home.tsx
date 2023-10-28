@@ -82,6 +82,7 @@ export function Home() {
                 }
             });
 
+        handleApi();
     }, []);
 
     useEffect(() => {
@@ -163,7 +164,6 @@ export function Home() {
         }
 
         requests();
-        handleApi();
     });
 
     async function handleApi() {
@@ -258,21 +258,17 @@ export function Home() {
 
     function setComponentForCards() {
         if (componentCard == 'list') {
-            if (cardList?.length == 0 || cardList == undefined) {
-                return (
-                    <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
-                        Não há items para exibir
-                    </Text>
-                    
-                );
-            }
-
             return (
                 <FlatList
                     data={cardList}
                     renderItem={({ item }) => (
                         <CardsList title={item.title} subTitle={item.subtitle} />
                     )}
+                    ListEmptyComponent={
+                        <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
+                            Não há items para exibir
+                        </Text>
+                    }
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={handleApi} />
                     }
@@ -281,21 +277,17 @@ export function Home() {
             );
         }
         else if (componentCard == 'historic') {
-
-            if (cardHistoric?.length == 0 || cardHistoric == undefined) {
-                return (
-                    <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
-                        Não há items para exibir
-                    </Text>
-                );
-            }
-
             return (
                 <FlatList
                     data={cardHistoric}
                     renderItem={({ item }) => (
                         <Cards title={item.title} subTitle={item.subtitle} />
                     )}
+                    ListEmptyComponent={
+                        <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
+                            Não há items para exibir
+                        </Text>
+                    }
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={handleApi} />
                     }
@@ -304,20 +296,17 @@ export function Home() {
             );
         }
         else {
-            if (card?.length == 0 || card == undefined) {
-                return (
-                    <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
-                        Não há items para exibir
-                    </Text>
-                );
-            }
-
             return (
                 <FlatList
                     data={card}
                     renderItem={({ item }) => (
                         <Cards title={item.title} subTitle={item.subtitle} />
                     )}
+                    ListEmptyComponent={
+                        <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>
+                            Não há items para exibir
+                        </Text>
+                    }
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={handleApi} />
                     }

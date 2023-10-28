@@ -1,0 +1,28 @@
+{
+    "suggestions": [
+        {
+            "title": "\"Abrir aplicativo...\"",
+            "subtitle": "Abre o aplicativo solicitado"
+        },
+        {
+            "title": "\"Previsão do tempo em...\"",
+            "subtitle": "Pesquisa o clima da cidade pedida"
+        },
+        {
+            "title": "\"Pesquisar sobre...\"",
+            "subtitle": "Faz uma pesquisa na web sobre o assunto solicitado"
+        },
+        {
+            "title": "\"Pesquisar vídeo sobre...\"",
+            "subtitle": "Faz uma pesquisa no YouTube sobre o assunto solicitado"
+        },
+        {
+            "title": "\"Criar uma nova lista\"",
+            "subtitle": "Cria uma nova lista de tarefas"
+        },
+        {
+            "title": "\"Criar uma nova tarefa\"",
+            "subtitle": "Cria uma nova tarefa em alguma lista existente"
+        }
+    ]
+}

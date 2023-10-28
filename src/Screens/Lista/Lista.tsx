@@ -228,15 +228,14 @@ export function Lista({ route }: any) {
                                     concluida={item.concluida}
                                 />
                             )}
+                            ListEmptyComponent={
+                                <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>Não há tarefas nessa lista</Text>
+                            }
                             refreshControl={
                                 <RefreshControl refreshing={refreshing} onRefresh={getListInformations} />
                             }
                             keyExtractor={(item, index) => index.toString()}
                         />
-
-                        {
-                            tasks.length == 0 && <Text style={{ 'flex': 1, 'textAlign': 'center', 'justifyContent': 'center', 'color': '#ffffff' }}>Não há tarefas nessa lista</Text>
-                        }
 
                         <View style={style.hr} />
                         <View style={style.rowView}>

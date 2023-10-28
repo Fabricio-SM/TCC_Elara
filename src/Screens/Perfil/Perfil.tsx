@@ -112,6 +112,8 @@ export function Perfil() {
                     Authorization: `Bearer ${token}`
                 }
             });
+
+            Alert.alert("Histórico deletado com sucesso")
         } catch (error) {
             return Alert.alert("Um erro aconteceu", "Houve um erro ao procesar sua solicitacão, por favor tente novamente mais tarde");
         }

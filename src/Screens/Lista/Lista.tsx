@@ -7,7 +7,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { style } from "./style";
 import { Background } from "../../Components/Background/Background";
-import { PlanetImage } from "../../Components/Image";
 import { Input } from "../../Components/Input/Input";
 import { convertDateToString, convertTimestampToDate } from "../../utils/convertDate";
 import { Tarefas } from "../../Components/Tarefas/Tarefas";

@@ -19,12 +19,30 @@ export function Tarefas(props: TarefaProps) {
     const [modalExcludeStatus, setModalExcludeStatus] = useState<boolean>(false);
     const [modalEditStatus, setModalEditStatus] = useState<boolean>(false);
 
-    async function updateTask() {
-        
+    async function updateTask(body: TarefaProps) {
+        try {
+            const token = await getData("access_token");
+            
+            const { data, status } = await axios.put(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/task/${props.nomeTarefa}`, body, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (status == 200) {
+                Alert.alert("Tarefa atualizada com sucesso", "Sua tarefa foi atualizada com sucesso, atualize a página para ver as alterações");
+                setModalEditStatus(false);
+            }
+        } catch (error) {
+            return error;
+        }
     }
 
     async function handleDeleteTask() {
         const token = await getData("access_token");
+
+        console.log(props.nomeTarefa);
+        
 
         try {
             const { data, status } = await axios.delete(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/task/${props.nomeTarefa}`, {
@@ -70,13 +88,16 @@ export function Tarefas(props: TarefaProps) {
                             color="#ffffff"
                             name="pen"
                             type="material-community"
-                            onPress={() => { setModalEditStatus(true) }}
+                            onPress={() => setModalEditStatus(true)}
                         />
                     </Pressable>
                     <ModalEditTask
+                        nomeTarefa={props.nomeTarefa}
+                        dataEntrega={props.dataEntrega}
+                        concluido={props.concluida}
                         updateTask={updateTask}
                         visible={modalEditStatus}
-                        onClose={() => setModalEditStatus(false)} 
+                        onClose={() => setModalEditStatus(false)}
                     />
                     <View style={style.space} />
                     <Pressable style={style.icon}>
@@ -85,7 +106,7 @@ export function Tarefas(props: TarefaProps) {
                             color="#ffffff"
                             name="trash-can"
                             type="material-community"
-                            onPress={() => { setModalExcludeStatus(true) }}
+                            onPress={() => setModalExcludeStatus(true) }
                         />
                     </Pressable>
 

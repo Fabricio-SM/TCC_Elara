@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm ,Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Checkbox from "expo-checkbox";
 import { Icon } from "react-native-elements";
@@ -37,7 +37,7 @@ export function ModalEditTask({ onClose, nomeTarefa, dataEntrega, concluido, upd
     const { control, handleSubmit, formState: { errors } } = useForm<FormProps>({
         resolver: yupResolver(schema),
     });
-    
+
 
     function verifyIfDateIsNull() {
         if (date == null) {
@@ -57,7 +57,7 @@ export function ModalEditTask({ onClose, nomeTarefa, dataEntrega, concluido, upd
         setDate(timeStampConverted);
     };
 
-    function handleRequestToUpdateTask({nome}: FormProps) {
+    function handleRequestToUpdateTask({ nome }: FormProps) {
         const body = {
             nomeTarefa: nome,
             dataEntrega: date,
@@ -76,62 +76,68 @@ export function ModalEditTask({ onClose, nomeTarefa, dataEntrega, concluido, upd
         >
             <View style={style.container}>
                 <View style={style.content}>
-                    <TouchableOpacity 
-                        style={style.closeIcon} 
-                        onPress={() => {
-                            onClose();
-                            setDate(dataEntrega || null);
-                            setIsChecked(concluido);
-                        }}
-                    >
-                        <Icon
-                            name='close'
-                            size={20}
-                            color={THEME.COLORS.TEXT}
-                        />
-                    </TouchableOpacity>
-
-                    <Controller
-                        control={control}
-                        name="nome"
-                        render={({ field: { onChange } }) => (
-                            <Input
-                                labelValue="Nome da tarefa"
-                                textContentType="name"
-                                placeholder="Nome da tarefa"
-                                inputMode="text"
-                                autoComplete="name"
-                                onChangeText={onChange}
-                                errorMessage={errors.nome?.message}
-                                defaultValue={nomeTarefa}
+                    <View style={style.rowView}>
+                        <View style={style.sizedBox}></View>
+                        <View style={style.colView}>
+                            <Controller
+                                control={control}
+                                name="nome"
+                                render={({ field: { onChange } }) => (
+                                    <Input
+                                        labelValue="Nome da tarefa:"
+                                        textContentType="name"
+                                        placeholder="Nome da tarefa"
+                                        inputMode="text"
+                                        autoComplete="name"
+                                        onChangeText={onChange}
+                                        errorMessage={errors.nome?.message}
+                                        defaultValue={nomeTarefa}
+                                    />
+                                )}
                             />
-                        )}
-                    />
 
-                    <Input
-                        labelValue="Data de entrega: "
-                        showSoftInputOnFocus={false}
-                        value={date != null ? convertDateToString(date) : "Sem data de entrega"}
-                        onPressIn={() => setShow(true)}
-                    />
-                    {
-                        show &&
-                        <DateTimePicker
-                            testID="datePicker"
-                            value={verifyIfDateIsNull()}
-                            mode="date"
-                            onChange={onChange}
-                        />
-                    }
+                            <Input
+                                labelValue="Data de entrega: "
+                                showSoftInputOnFocus={false}
+                                value={date != null ? convertDateToString(date) : "Sem data de entrega"}
+                                onPressIn={() => setShow(true)}
+                            />
+                            {
+                                show &&
+                                <DateTimePicker
+                                    testID="datePicker"
+                                    value={verifyIfDateIsNull()}
+                                    mode="date"
+                                    onChange={onChange}
+                                />
+                            }
 
-                    <View>
-                        <Text style={style.text}>Tarefa concluída: </Text>
-                        <Checkbox value={isChecked} onValueChange={setIsChecked} color={isChecked ? "#4630EB" : undefined}/>
+                            <View style={style.rowView2}>
+                                <Text style={style.text}>Tarefa concluída: </Text>
+                                <Checkbox value={isChecked} onValueChange={setIsChecked} color={isChecked ? "#4630EB" : undefined} />
+                                <View></View>
+                            </View>
+
+                            <Pressable style={style.button2} onPress={handleSubmit(handleRequestToUpdateTask)}>
+                                <Text style={style.textButton}>Salvar alterações</Text>
+                            </Pressable>
+                        </View>
+
+                        <TouchableOpacity
+                            style={style.closeIcon}
+                            onPress={() => {
+                                onClose();
+                                setDate(dataEntrega || null);
+                                setIsChecked(concluido);
+                            }}
+                        >
+                            <Icon
+                                name='close'
+                                size={20}
+                                color={THEME.COLORS.TEXT}
+                            />
+                        </TouchableOpacity>
                     </View>
-
-                    <Pressable style={style.button2} onPress={handleSubmit(handleRequestToUpdateTask)}>
-                        <Text style={style.textButton}>Salvar alterações</Text>
-                    </Pressable>
                 </View>
             </View>
         </Modal>

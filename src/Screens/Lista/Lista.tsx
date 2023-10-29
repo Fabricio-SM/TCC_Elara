@@ -188,7 +188,7 @@ export function Lista({ route }: any) {
                             <View style={style.colView}>
                                 <Input
                                     showSoftInputOnFocus={false}
-                                    labelValue="Data de entrega"
+                                    labelValue="Data de entrega:"
                                     editable={editMode}
                                     value={date != null ? convertDateToString(date) : "Sem data de entrega"}
                                     onPressIn={() => setShow(true)}

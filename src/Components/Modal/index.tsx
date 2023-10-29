@@ -21,20 +21,23 @@ export function ModalExclude({ message, onClose, handleApiDelete, ...rest }: Pro
         >
             <View style={style.container}>
                 <View style={style.content}>
-                <TouchableOpacity style={style.closeIcon} onPress={onClose}>
-                    <Icon
-                        name='close'
-                        size={20}
-                        color={THEME.COLORS.TEXT}
-                    />
-                </TouchableOpacity>
+                    <View style={style.rowView}>
+                        <View style={style.colView}>
+                            <Text style={style.text}>{message}</Text>
 
+                            <Pressable style={style.button2} onPress={handleApiDelete}>
+                                <Text style={style.textButton}>Excluir</Text>
+                            </Pressable>
+                        </View>
 
-                    <Text style={style.text}>{message}</Text>
-
-                    <Pressable style={style.button2} onPress={handleApiDelete}>
-                        <Text style={style.textButton}>Excluir</Text>
-                    </Pressable>
+                        <TouchableOpacity style={style.closeIcon} onPress={onClose}>
+                            <Icon
+                                name='close'
+                                size={20}
+                                color={THEME.COLORS.TEXT}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Modal>

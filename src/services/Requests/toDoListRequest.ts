@@ -76,7 +76,7 @@ export async function chooseRequestEndpoint(phrase: string) {
 
 async function newRequest(body: Object, endpoint: string) {
     try {
-        const token = await getData('token');
+        const token = await getData('access_token');
 
         console.log(body);
 

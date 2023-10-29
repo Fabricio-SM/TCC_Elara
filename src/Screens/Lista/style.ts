@@ -8,7 +8,7 @@ export const style = StyleSheet.create({
     },
 
     rowView: {
-        marginLeft: 20,
+        marginLeft: "3%",
         flexDirection:'row',
         justifyContent: 'space-between',
     },

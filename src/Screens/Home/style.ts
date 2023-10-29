@@ -43,9 +43,10 @@ export const style = StyleSheet.create({
     },
 
     view2: {
-        height: '50%',
+        height: '44%',
         width: '100%',   
         backgroundColor: '#2c2c2c',  
+        
     },
 
 });

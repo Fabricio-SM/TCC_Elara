@@ -9,11 +9,9 @@ export const style = StyleSheet.create({
     },
 
     content: {
-        width: 389,
-        height: 350,
+        width: "95%",
+        height: "42%",
         padding: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: THEME.COLORS.MODAL_COLOR,
         borderRadius: 8,
 
@@ -35,13 +33,34 @@ export const style = StyleSheet.create({
     },
 
     closeIcon: {
-        alignSelf: 'flex-end',
-        margin: 16
+        alignSelf: 'flex-start',
+        margin: 16,
     },
 
     textButton: {
         marginTop: 6,
         color: THEME.COLORS.TEXT,
         fontSize: 18,
-    }
+    },
+
+    sizedBox: {
+        width: "10%",
+    },
+
+    rowView: {
+        flexDirection:'row',
+        justifyContent: 'space-between',
+    },
+
+    rowView2: {
+        marginTop: "6%",
+        flexDirection:'row',
+        justifyContent: 'space-between',
+    },
+
+    colView: {
+        marginTop: "9%",
+        flexDirection:'column',
+        justifyContent: 'space-between',
+    },
 });

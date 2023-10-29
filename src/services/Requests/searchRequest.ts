@@ -4,7 +4,7 @@ import { removeWords } from "../../utils/removeWords";
 
 export async function webRequest(phrase: string) {
     try {
-        const token = await getData('token');
+        const token = await getData('access_token');
         const phraseCleaned = removeWords(phrase);
 
         console.log('Frase - ', phraseCleaned);
@@ -28,7 +28,7 @@ export async function webRequest(phrase: string) {
 
 export async function videoRequest(phrase: string): Promise<any> {
     try {
-        const token = await getData('token');
+        const token = await getData('access_token');
         const phraseCleaned = removeWords(phrase);
 
         console.log('Frase - ', phraseCleaned);

@@ -198,10 +198,6 @@ export function Cadastro() {
                             <Text style={style.textButton}>Cancelar</Text>
                         </Pressable>
                     </View>
-
-                    <View style={{ opacity: 0.5 }}>
-                        <PlanetImage />
-                    </View>
                 </View>
             </SafeAreaView>
         </Background>

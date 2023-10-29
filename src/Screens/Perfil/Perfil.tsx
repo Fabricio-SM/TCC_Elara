@@ -50,7 +50,7 @@ export function Perfil() {
         async function getInfosUser() {
             const [email, token] = await Promise.all([
                 getData('email'),
-                getData('token')
+                getData('access_token')
             ]);
 
             const { data } = await axios.get(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:${process.env.EXPO_PUBLIC_PORT}/user/${email}`, {

@@ -4,7 +4,7 @@ import { getData } from "../Storage/getData";
 
 export async function weatherRequest(phrase: string) {
     try {
-        const token = await getData('token');
+        const token = await getData('access_token');
 
         const phraseCleaned = removeWords(phrase);
 

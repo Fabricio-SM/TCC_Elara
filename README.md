@@ -44,11 +44,11 @@ Após realizar todas as etapas acima, já podemos iniciar a aplicação com o se
 
 
 ```bash
-$ yarn run dev
+$ yarn run start
 
 # ou
 
-$ npm run dev
+$ npm run start
 ```
 
 > Para a aplicação funcionar corretamente, certifique-se de que  as aplicações listadas no tópico [Outros repositórios](#outros-repositórios) estejam rodando também.
